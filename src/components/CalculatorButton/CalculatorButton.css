@@ -1,0 +1,8 @@
+.calculatorButton {
+    height: 128px;
+    width: 128px;
+    border-radius: 50%;
+    display: table-cell;
+    text-align: center;
+    vertical-align: middle;
+}

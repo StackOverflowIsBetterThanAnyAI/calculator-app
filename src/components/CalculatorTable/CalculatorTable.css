@@ -1,0 +1,9 @@
+.responsive-table {
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+}
+
+.responsive-table th {
+    padding: 0px;
+}
