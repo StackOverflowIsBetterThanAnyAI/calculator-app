@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import './CalculatorDisplay.css'
 
-localStorage.setItem('display', 'Result to be Displayed')
+const initialDisplayValue = 'Result to be displayed'
 
 const CalculatorDisplay = () => {
-    const [toBeDisplayed, setToBeDisplayed] = useState('')
+    const [toBeDisplayed, setToBeDisplayed] = useState(initialDisplayValue)
 
     useEffect(() => {
         setToBeDisplayed(localStorage.getItem('display') || 'fallback text')
-    }, [])
-
-    const a = 'Hans'
-    localStorage.setItem('display', a)
+    }, [localStorage.getItem('display')])
 
     return <div>{toBeDisplayed}</div>
 }

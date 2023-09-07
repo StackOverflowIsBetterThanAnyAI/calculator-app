@@ -3,8 +3,9 @@ import CalculatorButton from '../CalculatorButton/CalculatorButton'
 import './CalculatorTable.css'
 
 function CalculatorTable() {
-    const colorNumbers = '#f8b8a5'
-    const colorSymbols = '#f19e5b'
+    const COLOR_NUMBERS = '#f8b8a5'
+    const COLOR_SYMBOLS = '#f19e5b'
+    const COLOR_EQUALS = '#d66658'
 
     return (
         <div className="responsive-table">
@@ -13,83 +14,131 @@ function CalculatorTable() {
                     <tr>
                         <th>
                             <CalculatorButton
-                                bgColor={colorSymbols}
-                                text="AC"
+                                bgColor={COLOR_SYMBOLS}
+                                buttonText="AC"
                             />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorSymbols} text="/" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorSymbols} text="X" />
                         </th>
                         <th>
                             <CalculatorButton
-                                bgColor={colorSymbols}
-                                text="DEL"
+                                bgColor={COLOR_SYMBOLS}
+                                buttonText="/"
                             />
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            <CalculatorButton bgColor={colorNumbers} text="7" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorNumbers} text="8" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorNumbers} text="9" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorSymbols} text="-" />
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            <CalculatorButton bgColor={colorNumbers} text="4" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorNumbers} text="5" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorNumbers} text="6" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorSymbols} text="+" />
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>
-                            <CalculatorButton bgColor={colorNumbers} text="1" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorNumbers} text="2" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorNumbers} text="3" />
                         </th>
                         <th>
                             <CalculatorButton
-                                bgColor={colorSymbols}
-                                text="()"
+                                bgColor={COLOR_SYMBOLS}
+                                buttonText="X"
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_SYMBOLS}
+                                buttonText="DEL"
                             />
                         </th>
                     </tr>
                     <tr>
                         <th>
-                            <CalculatorButton bgColor={colorNumbers} text="0" />
-                        </th>
-                        <th>
-                            <CalculatorButton bgColor={colorSymbols} text="," />
-                        </th>
-                        <th>
                             <CalculatorButton
-                                bgColor={colorSymbols}
-                                text="+/-"
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={7}
                             />
                         </th>
                         <th>
-                            <CalculatorButton bgColor={colorSymbols} text="=" />
+                            <CalculatorButton
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={8}
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={9}
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_SYMBOLS}
+                                buttonText="-"
+                            />
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={4}
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={5}
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={6}
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_SYMBOLS}
+                                buttonText="+"
+                            />
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={1}
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={2}
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={3}
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_SYMBOLS}
+                                buttonText="()"
+                            />
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_NUMBERS}
+                                buttonText={0}
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_SYMBOLS}
+                                buttonText=","
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_SYMBOLS}
+                                buttonText="+/-"
+                            />
+                        </th>
+                        <th>
+                            <CalculatorButton
+                                bgColor={COLOR_EQUALS}
+                                buttonText="="
+                            />
                         </th>
                     </tr>
                 </tbody>
