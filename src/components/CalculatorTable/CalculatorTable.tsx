@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useRef } from 'react'
 import CalculatorButton from '../CalculatorButton/CalculatorButton'
 import './CalculatorTable.css'
 
@@ -6,21 +6,43 @@ type Props = {
     setLocalStorageValue: (newValue: string) => void
 }
 
+const COLOR_NUMBERS = '#f8b8a5'
+const COLOR_SYMBOLS = '#f19e5b'
+const COLOR_EQUALS = '#d66658'
+
 const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
-    const COLOR_NUMBERS = '#f8b8a5'
-    const COLOR_SYMBOLS = '#f19e5b'
-    const COLOR_EQUALS = '#d66658'
+    // current value in local storage
+    const displayedText = localStorage.getItem('display')
+
+    // state of algebraic sign
+    const signIsPositive = useRef(true)
 
     const handleDisplayText = (buttonText: string | number) => {
-        if (buttonText === 'AC') setLocalStorageValue('')
-        else if (
-            typeof buttonText === 'number' ||
-            allowCommaUsage(localStorage.getItem('display'))
-        ) {
+        if (typeof buttonText === 'number') {
             setLocalStorageValue(
-                localStorage.getItem('display') + buttonText.toString()
+                checkForStartingZero(displayedText) + buttonText.toString()
             )
+        } else if (buttonText === ',' && allowCommaUsage(displayedText)) {
+            setLocalStorageValue(displayedText + buttonText.toString())
+        } else if (buttonText === 'AC') setLocalStorageValue('')
+        else if (buttonText === 'DEL')
+            setLocalStorageValue(
+                displayedText?.slice(0, displayedText.length - 1) || ''
+            )
+        else if (buttonText === '+/-') {
+            const algebraicSign = checkForAlgebraicSign(displayedText || '')
+            setLocalStorageValue(algebraicSign + displayedText)
         }
+    }
+
+    const checkForStartingZero = (displayedText: string | null) => {
+        if (
+            displayedText?.length === 1 &&
+            displayedText.charAt(0) === '0' &&
+            displayedText.charAt(1) !== ','
+        )
+            return displayedText.charAt(1)
+        return displayedText
     }
 
     const allowCommaUsage = (displayedText: string | null) => {
@@ -31,6 +53,19 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
             }
         }
         return true
+    }
+
+    const checkForAlgebraicSign = (displayedText: string): string => {
+        signIsPositive.current = toggleAlgebraicSign(signIsPositive.current)
+        const symbol = signIsPositive.current ? '+' : '-'
+        if (displayedText.charAt(0) === '-') {
+            return '+'
+        }
+        return symbol
+    }
+
+    const toggleAlgebraicSign = (currentSign: boolean) => {
+        return !currentSign
     }
 
     return (
@@ -61,9 +96,9 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                         <th>
                             <CalculatorButton
                                 bgColor={COLOR_SYMBOLS}
-                                buttonText="X"
+                                buttonText="×"
                                 onClick={() => {
-                                    handleDisplayText('X')
+                                    handleDisplayText('×')
                                     console.log(localStorage.getItem('display'))
                                 }}
                             />
