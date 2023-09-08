@@ -1,32 +1,18 @@
-import React, { FC } from 'react'
+import React, { FC, MouseEventHandler } from 'react'
 import './CalculatorButton.css'
 
 type Props = {
     bgColor: string
     buttonText: string | number
+    onClick: MouseEventHandler
 }
 
-const CalculatorButton: FC<Props> = ({ bgColor, buttonText }) => {
-    const handleDisplayText = (buttonText: string | number) => {
-        if (buttonText === 'AC') localStorage.setItem('display', '')
-        else if (
-            typeof buttonText === 'number' ||
-            (buttonText === ',' && localStorage.getItem('display'))
-        ) {
-            localStorage.setItem(
-                'display',
-                localStorage.getItem('display') + buttonText.toString()
-            )
-        }
-    }
+const CalculatorButton: FC<Props> = ({ bgColor, buttonText, onClick }) => {
     return (
         <span>
             <button
                 className="calculatorButton"
-                onClick={() => {
-                    handleDisplayText(buttonText)
-                    console.log(localStorage.getItem('display'))
-                }}
+                onClick={onClick}
                 style={{ background: bgColor }}
             >
                 {buttonText}
