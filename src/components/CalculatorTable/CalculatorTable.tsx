@@ -107,7 +107,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText="AC"
                                 onClick={() => {
                                     handleDisplayText('AC')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -117,7 +116,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText="/"
                                 onClick={() => {
                                     handleDisplayText('/')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -127,7 +125,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText="x"
                                 onClick={() => {
                                     handleDisplayText('x')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -137,7 +134,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText="DEL"
                                 onClick={() => {
                                     handleDisplayText('DEL')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -149,7 +145,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={7}
                                 onClick={() => {
                                     handleDisplayText(7)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -159,7 +154,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={8}
                                 onClick={() => {
                                     handleDisplayText(8)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -169,7 +163,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={9}
                                 onClick={() => {
                                     handleDisplayText(9)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -179,7 +172,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText="-"
                                 onClick={() => {
                                     handleDisplayText('-')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -191,7 +183,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={4}
                                 onClick={() => {
                                     handleDisplayText(4)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -201,7 +192,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={5}
                                 onClick={() => {
                                     handleDisplayText(5)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -211,7 +201,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={6}
                                 onClick={() => {
                                     handleDisplayText(6)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -221,7 +210,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText="+"
                                 onClick={() => {
                                     handleDisplayText('+')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -233,7 +221,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={1}
                                 onClick={() => {
                                     handleDisplayText(1)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -243,7 +230,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={2}
                                 onClick={() => {
                                     handleDisplayText(2)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -253,7 +239,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={3}
                                 onClick={() => {
                                     handleDisplayText(3)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -263,7 +248,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText="()"
                                 onClick={() => {
                                     handleDisplayText('()')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -275,7 +259,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText={0}
                                 onClick={() => {
                                     handleDisplayText(0)
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -285,7 +268,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText=","
                                 onClick={() => {
                                     handleDisplayText(',')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -295,7 +277,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText="+/-"
                                 onClick={() => {
                                     handleDisplayText('+/-')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
@@ -305,7 +286,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                                 buttonText="="
                                 onClick={() => {
                                     handleDisplayText('=')
-                                    console.log(localStorage.getItem('display'))
                                 }}
                             />
                         </th>
