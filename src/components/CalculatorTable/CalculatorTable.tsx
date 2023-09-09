@@ -75,7 +75,10 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
         displayedText: string | null,
         buttonText: string
     ): string => {
-        return displayedText ? ` ${buttonText} ` : ''
+        return displayedText &&
+            displayedText.charAt(displayedText.length - 1) !== ' '
+            ? ` ${buttonText} `
+            : ''
     }
 
     //const calculateResult = (displayedText: string | null) => {}
