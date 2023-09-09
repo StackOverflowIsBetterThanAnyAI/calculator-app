@@ -6,7 +6,7 @@ type Props = {
 }
 
 const CalculatorDisplay: FC<Props> = ({ localStorageValue }) => {
-    return <div>{localStorageValue}</div>
+    return <div className="calculatorDisplay">{localStorageValue}</div>
 }
 
 export default CalculatorDisplay

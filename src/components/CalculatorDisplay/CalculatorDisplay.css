@@ -1,0 +1,6 @@
+.calculatorDisplay {
+    min-height: 128px;
+    padding: 8px;
+    margin-bottom: 16px;
+    background-color: rgb(138, 138, 138);
+}

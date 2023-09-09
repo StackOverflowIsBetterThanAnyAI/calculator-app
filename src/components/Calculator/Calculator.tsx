@@ -7,7 +7,7 @@ import useLocalStorage from '../../hooks/useLocalStorage'
 const Calculator = () => {
     const [localStorageValue, setLocalStorageValue] = useLocalStorage(
         'display',
-        'Fallback Text To Be Displayed'
+        'The Calculator Is Waiting For Your Actions.'
     )
 
     return (
