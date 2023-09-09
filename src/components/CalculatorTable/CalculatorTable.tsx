@@ -85,6 +85,8 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
 
     //const addParantheses = (displayedText: string | null) => {}
 
+    // TODO: still problematic: 000000 possible after arithmetic sign and no second comma possible after arithmetic sign
+
     return (
         <div className="responsive-table">
             <table cellSpacing={0}>
