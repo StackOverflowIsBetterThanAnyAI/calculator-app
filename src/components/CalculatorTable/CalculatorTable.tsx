@@ -29,9 +29,13 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
             setLocalStorageValue(
                 displayedText?.slice(0, displayedText.length - 1) || ''
             )
-        else if (buttonText === '+/-') {
-            checkForAlgebraicSign(displayedText)
-        }
+        else if (buttonText === '+/-') checkForAlgebraicSign(displayedText)
+        else if (['+', '-', '/', 'x'].includes(buttonText))
+            setLocalStorageValue(
+                displayedText + addArithmeticOperator(displayedText, buttonText)
+            )
+        //else if (buttonText === '=') calculateResult(displayedText)
+        //else if (buttonText === '()') addParantheses(displayedText)
     }
 
     const checkForStartingZero = (displayedText: string | null) => {
@@ -67,6 +71,17 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
         return !currentSign
     }
 
+    const addArithmeticOperator = (
+        displayedText: string | null,
+        buttonText: string
+    ): string => {
+        return displayedText ? ` ${buttonText} ` : ''
+    }
+
+    //const calculateResult = (displayedText: string | null) => {}
+
+    //const addParantheses = (displayedText: string | null) => {}
+
     return (
         <div className="responsive-table">
             <table cellSpacing={0}>
@@ -95,9 +110,9 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                         <th>
                             <CalculatorButton
                                 bgColor={COLOR_SYMBOLS}
-                                buttonText="×"
+                                buttonText="x"
                                 onClick={() => {
-                                    handleDisplayText('×')
+                                    handleDisplayText('x')
                                     console.log(localStorage.getItem('display'))
                                 }}
                             />
