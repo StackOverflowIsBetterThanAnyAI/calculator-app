@@ -27,17 +27,18 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
         } else if (buttonText === 'AC') {
             setLocalStorageValue('')
             signIsPositive.current = true
-        } else if (buttonText === 'DEL')
+        } else if (buttonText === 'DEL') {
             setLocalStorageValue(
                 displayedText?.slice(0, displayedText.length - 1) || ''
             )
-        else if (buttonText === '+/-') checkForAlgebraicSign(displayedText)
+            if (displayedText === '') signIsPositive.current = true
+        } else if (buttonText === '+/-') checkForAlgebraicSign(displayedText)
         else if (['+', '-', '/', 'x'].includes(buttonText))
             setLocalStorageValue(
                 displayedText + addArithmeticOperator(displayedText, buttonText)
             )
         //else if (buttonText === '=') calculateResult(displayedText)
-        //else if (buttonText === '()') addParantheses(displayedText)
+        else if (buttonText === '()') addParantheses(displayedText)
     }
 
     const checkForStartingZero = (displayedText: string | null) => {
@@ -92,7 +93,16 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
 
     //const calculateResult = (displayedText: string | null) => {}
 
-    //const addParantheses = (displayedText: string | null) => {}
+    const addParantheses = (displayedText: string | null) => {
+        let addMultiplication = ''
+        if (
+            !isNaN(
+                parseInt(displayedText?.charAt(displayedText.length - 1) || '')
+            )
+        )
+            addMultiplication = ' x '
+        setLocalStorageValue(`${displayedText}${addMultiplication} (`)
+    }
 
     // TODO: still problematic: 000000 possible after arithmetic sign
 
