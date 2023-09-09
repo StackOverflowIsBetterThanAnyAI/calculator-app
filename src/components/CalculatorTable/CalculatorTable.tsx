@@ -30,8 +30,7 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                 displayedText?.slice(0, displayedText.length - 1) || ''
             )
         else if (buttonText === '+/-') {
-            const algebraicSign = checkForAlgebraicSign(displayedText || '')
-            setLocalStorageValue(algebraicSign + displayedText)
+            checkForAlgebraicSign(displayedText)
         }
     }
 
@@ -55,13 +54,13 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
         return true
     }
 
-    const checkForAlgebraicSign = (displayedText: string): string => {
+    const checkForAlgebraicSign = (displayedText: string | null): void => {
         signIsPositive.current = toggleAlgebraicSign(signIsPositive.current)
-        const symbol = signIsPositive.current ? '+' : '-'
-        if (displayedText.charAt(0) === '-') {
-            return '+'
+        const symbol = signIsPositive.current ? '' : '-'
+        if (displayedText?.charAt(0) === '-') {
+            displayedText = displayedText.slice(1)
         }
-        return symbol
+        setLocalStorageValue(symbol + displayedText)
     }
 
     const toggleAlgebraicSign = (currentSign: boolean) => {
