@@ -24,8 +24,10 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
             )
         } else if (buttonText === ',' && allowCommaUsage(displayedText)) {
             setLocalStorageValue(displayedText + buttonText.toString())
-        } else if (buttonText === 'AC') setLocalStorageValue('')
-        else if (buttonText === 'DEL')
+        } else if (buttonText === 'AC') {
+            setLocalStorageValue('')
+            signIsPositive.current = true
+        } else if (buttonText === 'DEL')
             setLocalStorageValue(
                 displayedText?.slice(0, displayedText.length - 1) || ''
             )
@@ -50,10 +52,12 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
 
     const allowCommaUsage = (displayedText: string | null) => {
         if (!displayedText) return false
-        for (let i = 0; i < displayedText.length; i++) {
-            if (displayedText.charAt(i) === ',') {
+        const splitDisplayedText = displayedText.split(' ')
+        const numberToCheck = splitDisplayedText.length - 1
+        if (!splitDisplayedText[numberToCheck].length) return false
+        for (let i = 0; i < splitDisplayedText[numberToCheck].length; i++) {
+            if (splitDisplayedText[numberToCheck].charAt(i) === ',')
                 return false
-            }
         }
         return true
     }
@@ -75,9 +79,14 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
         displayedText: string | null,
         buttonText: string
     ): string => {
+        const lastCharIsComma =
+            displayedText?.charAt(displayedText.length - 1) === ','
+        const returnText = lastCharIsComma
+            ? `0 ${buttonText} `
+            : ` ${buttonText} `
         return displayedText &&
             displayedText.charAt(displayedText.length - 1) !== ' '
-            ? ` ${buttonText} `
+            ? returnText
             : ''
     }
 
@@ -85,7 +94,7 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
 
     //const addParantheses = (displayedText: string | null) => {}
 
-    // TODO: still problematic: 000000 possible after arithmetic sign and no second comma possible after arithmetic sign
+    // TODO: still problematic: 000000 possible after arithmetic sign
 
     return (
         <div className="responsive-table">
