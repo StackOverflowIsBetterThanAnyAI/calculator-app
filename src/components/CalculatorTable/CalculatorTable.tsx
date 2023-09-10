@@ -42,19 +42,34 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
     }
 
     const checkForStartingZero = (displayedText: string | null) => {
+        const splitDisplayedText = displayedText?.split(' ') || ''
+        const numberToCheck = splitDisplayedText
+            ? splitDisplayedText.length - 1
+            : 0
+
         if (
             displayedText?.length === 1 &&
             displayedText.charAt(0) === '0' &&
             displayedText.charAt(1) !== ','
         )
             return displayedText.charAt(1)
+
+        for (let i = 0; i < splitDisplayedText[numberToCheck].length; i++) {
+            if (
+                splitDisplayedText[numberToCheck].charAt(0) === '0' &&
+                splitDisplayedText[numberToCheck].charAt(1) !== ','
+            )
+                return displayedText?.slice(0, displayedText.length - 1)
+        }
         return displayedText
     }
 
     const allowCommaUsage = (displayedText: string | null) => {
         if (!displayedText) return false
+
         const splitDisplayedText = displayedText.split(' ')
         const numberToCheck = splitDisplayedText.length - 1
+
         if (!splitDisplayedText[numberToCheck].length) return false
         for (let i = 0; i < splitDisplayedText[numberToCheck].length; i++) {
             if (splitDisplayedText[numberToCheck].charAt(i) === ',')
