@@ -136,7 +136,7 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
         )
             leftParenthesis.current = true
 
-        const upcomingSign = leftParenthesis.current ? '(' : ')'
+        let upcomingSign = leftParenthesis.current ? '(' : ')'
 
         // whenever the user wants to have left parantheses and the last block is just
         // a set of numbers, a multiplication is added right in front of the parantheses
@@ -145,9 +145,16 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
                 parseInt(displayedText?.charAt(displayedText.length - 1) || '')
             )
         )
-            addMultiplication = ' x '
+            if (
+                paranthesesCounter.current.left ===
+                paranthesesCounter.current.right
+            ) {
+                addMultiplication = ' x '
+            } else {
+                upcomingSign = ')'
+            }
         setLocalStorageValue(
-            `${displayedText}${addMultiplication} ${upcomingSign}`
+            `${displayedText}${addMultiplication}${upcomingSign}`
         )
     }
 
