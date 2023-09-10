@@ -174,7 +174,7 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
     }
 
     return (
-        <div className="responsive-table">
+        <div className="calculatorTable">
             <table cellSpacing={0}>
                 <tbody>
                     <tr>

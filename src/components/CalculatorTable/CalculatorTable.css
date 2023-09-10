@@ -1,9 +1,9 @@
-.responsive-table {
+.calculatorTable {
     width: 100%;
     margin: 0 auto;
     border-collapse: collapse;
 }
 
-.responsive-table th {
+.calculatorTable th {
     padding: 0px;
 }
