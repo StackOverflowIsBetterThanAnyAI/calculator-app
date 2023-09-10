@@ -6,18 +6,26 @@ type Props = {
     setLocalStorageValue: (newValue: string) => void
 }
 
-const COLOR_NUMBERS = '#f8b8a5'
-const COLOR_SYMBOLS = '#f19e5b'
-const COLOR_EQUALS = '#d66658'
+const COLOR_NUMBERS: string = '#f8b8a5'
+const COLOR_SYMBOLS: string = '#f19e5b'
+const COLOR_EQUALS: string = '#d66658'
 
 const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
     // current value in local storage
     const displayedText = localStorage.getItem('display')
 
-    // state of algebraic sign
-    const signIsPositive = useRef(true)
+    // ref of algebraic sign (positive or negative value)
+    const signIsPositive = useRef<boolean>(true)
 
-    const handleDisplayText = (buttonText: string | number) => {
+    // ref for parantheses calculations (left or right parantheses)
+    const paranthesesCounter = useRef<{ left: number; right: number }>({
+        left: 0,
+        right: 0,
+    })
+    const leftParenthesis = useRef<boolean>(true)
+
+    // handles what is displayed on the display
+    const handleDisplayText = (buttonText: string | number): void => {
         if (typeof buttonText === 'number') {
             setLocalStorageValue(
                 checkForStartingZero(displayedText) + buttonText.toString()
@@ -41,23 +49,29 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
         else if (buttonText === '()') addParantheses(displayedText)
     }
 
-    const checkForStartingZero = (displayedText: string | null) => {
+    // checks if the user is allowed to type '0' or not
+    const checkForStartingZero = (displayedText: string | null): string => {
         const splitDisplayedText = displayedText?.split(' ') || ''
         const numberToCheck = splitDisplayedText
             ? splitDisplayedText.length - 1
             : 0
 
+        // the latest set of numbers is checked if it starts with a '0' and a Comma
         for (let i = 0; i < splitDisplayedText[numberToCheck].length; i++) {
             if (
                 splitDisplayedText[numberToCheck].charAt(0) === '0' &&
                 splitDisplayedText[numberToCheck].charAt(1) !== ','
             )
-                return displayedText?.slice(0, displayedText.length - 1)
+                // latest typed '0' is removed
+                return displayedText?.slice(0, displayedText.length - 1) || ''
         }
-        return displayedText
+        // change nothing
+        return displayedText || ''
     }
 
-    const allowCommaUsage = (displayedText: string | null) => {
+    // chekcs if the user is allowed to use a Comma
+    const allowCommaUsage = (displayedText: string | null): boolean => {
+        // no Comma is allowed in the beginning of a new set of numbers
         if (!displayedText) return false
 
         const splitDisplayedText = displayedText.split(' ')
@@ -65,29 +79,36 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
 
         if (!splitDisplayedText[numberToCheck].length) return false
         for (let i = 0; i < splitDisplayedText[numberToCheck].length; i++) {
+            // there is only one single Comma allowed in each set of numbers
             if (splitDisplayedText[numberToCheck].charAt(i) === ',')
                 return false
         }
         return true
     }
 
+    // toggles the algebraic sign of the first set of numbers, TODO: change it for every set
     const checkForAlgebraicSign = (displayedText: string | null): void => {
         signIsPositive.current = toggleAlgebraicSign(signIsPositive.current)
         const symbol = signIsPositive.current ? '' : '-'
+
         if (displayedText?.charAt(0) === '-') {
             displayedText = displayedText.slice(1)
         }
         setLocalStorageValue(symbol + displayedText)
     }
 
+    // toggles the state for the algebraic sign
     const toggleAlgebraicSign = (currentSign: boolean) => {
         return !currentSign
     }
 
+    // logic for the four arithmetic operators + - / x
     const addArithmeticOperator = (
         displayedText: string | null,
         buttonText: string
     ): string => {
+        // in case there is no number after a Comma,
+        // a '0' is added right in front of the arithmetic operator
         const lastCharIsComma =
             displayedText?.charAt(displayedText.length - 1) === ','
         const returnText = lastCharIsComma
@@ -101,18 +122,56 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
 
     //const calculateResult = (displayedText: string | null) => {}
 
-    const addParantheses = (displayedText: string | null) => {
+    // whole logic for parantheses
+    const addParantheses = (displayedText: string | null): void => {
+        paranthesesCounter.current = {
+            left: calculateLeftParantheses(displayedText),
+            right: calculateRightParantheses(displayedText),
+        }
+
         let addMultiplication = ''
+
+        if (
+            paranthesesCounter.current.left === paranthesesCounter.current.right
+        )
+            leftParenthesis.current = true
+
+        const upcomingSign = leftParenthesis.current ? '(' : ')'
+
+        // whenever the user wants to have left parantheses and the last block is just
+        // a set of numbers, a multiplication is added right in front of the parantheses
         if (
             !isNaN(
                 parseInt(displayedText?.charAt(displayedText.length - 1) || '')
             )
         )
             addMultiplication = ' x '
-        setLocalStorageValue(`${displayedText}${addMultiplication} (`)
+        setLocalStorageValue(
+            `${displayedText}${addMultiplication} ${upcomingSign}`
+        )
     }
 
-    // TODO: still problematic: 000000 possible after arithmetic sign
+    // counts the number of left parantheses
+    const calculateLeftParantheses = (displayedText: string | null): number => {
+        if (!displayedText) return -1
+        let counterLeftParantheses = 0
+        for (let i = 0; i < displayedText.length; i++) {
+            if (displayedText.charAt(i) === '(') counterLeftParantheses++
+        }
+        return counterLeftParantheses
+    }
+
+    // counts the number of right parantheses
+    const calculateRightParantheses = (
+        displayedText: string | null
+    ): number => {
+        if (!displayedText) return -1
+        let counterRightParantheses = 0
+        for (let i = 0; i < displayedText.length; i++) {
+            if (displayedText.charAt(i) === ')') counterRightParantheses++
+        }
+        return counterRightParantheses
+    }
 
     return (
         <div className="responsive-table">
