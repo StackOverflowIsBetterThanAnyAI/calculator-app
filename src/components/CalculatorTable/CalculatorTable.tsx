@@ -143,13 +143,14 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
         if (
             !isNaN(
                 parseInt(displayedText?.charAt(displayedText.length - 1) || '')
-            )
+            ) ||
+            paranthesesCounter.current.left === paranthesesCounter.current.right
         )
             if (
                 paranthesesCounter.current.left ===
                 paranthesesCounter.current.right
             ) {
-                addMultiplication = ' x '
+                addMultiplication = displayedText ? ' x ' : ''
             } else {
                 upcomingSign = ')'
             }
