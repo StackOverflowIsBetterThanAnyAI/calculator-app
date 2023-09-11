@@ -2,11 +2,20 @@ import React, { FC } from 'react'
 import './CalculatorDisplay.css'
 
 type Props = {
-    localStorageValue: string
+    localStorageValueInput: string
+    localStorageValueOutput: string
 }
 
-const CalculatorDisplay: FC<Props> = ({ localStorageValue }) => {
-    return <div className="calculatorDisplay">{localStorageValue}</div>
+const CalculatorDisplay: FC<Props> = ({
+    localStorageValueInput,
+    localStorageValueOutput,
+}) => {
+    return (
+        <div className="calculatorDisplay">
+            {localStorageValueInput} <br />
+            {localStorageValueOutput}
+        </div>
+    )
 }
 
 export default CalculatorDisplay

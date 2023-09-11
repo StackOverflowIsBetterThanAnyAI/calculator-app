@@ -3,14 +3,18 @@ import CalculatorButton from '../CalculatorButton/CalculatorButton'
 import './CalculatorTable.css'
 
 type Props = {
-    setLocalStorageValue: (newValue: string) => void
+    setLocalStorageValueInput: (newValue: string) => void
+    setLocalStorageValueOutput: (newValue: string) => void
 }
 
 const COLOR_NUMBERS: string = '#f8b8a5'
 const COLOR_SYMBOLS: string = '#f19e5b'
 const COLOR_EQUALS: string = '#d66658'
 
-const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
+const CalculatorTable: FC<Props> = ({
+    setLocalStorageValueInput,
+    setLocalStorageValueOutput,
+}) => {
     // current value in local storage
     const displayedText = localStorage.getItem('display')
 
@@ -27,26 +31,26 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
     // handles what is displayed on the display
     const handleDisplayText = (buttonText: string | number): void => {
         if (typeof buttonText === 'number') {
-            setLocalStorageValue(
+            setLocalStorageValueInput(
                 checkForStartingZero(displayedText) + buttonText.toString()
             )
         } else if (buttonText === ',' && allowCommaUsage(displayedText)) {
-            setLocalStorageValue(displayedText + buttonText.toString())
+            setLocalStorageValueInput(displayedText + buttonText.toString())
         } else if (buttonText === 'AC') {
-            setLocalStorageValue('')
+            setLocalStorageValueInput('')
             signIsPositive.current = true
         } else if (buttonText === 'DEL') {
-            setLocalStorageValue(
+            setLocalStorageValueInput(
                 displayedText?.slice(0, displayedText.length - 1) || ''
             )
             if (displayedText === '') signIsPositive.current = true
         } else if (buttonText === '+/-') checkForAlgebraicSign(displayedText)
         else if (['+', '-', '/', 'x'].includes(buttonText))
-            setLocalStorageValue(
+            setLocalStorageValueInput(
                 displayedText + addArithmeticOperator(displayedText, buttonText)
             )
-        //else if (buttonText === '=') calculateResult(displayedText)
         else if (buttonText === '()') addParantheses(displayedText)
+        else if (buttonText === '=') calculateResult(displayedText)
     }
 
     // checks if the user is allowed to type '0' or not
@@ -94,7 +98,7 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
         if (displayedText?.charAt(0) === '-') {
             displayedText = displayedText.slice(1)
         }
-        setLocalStorageValue(symbol + displayedText)
+        setLocalStorageValueInput(symbol + displayedText)
     }
 
     // toggles the state for the algebraic sign
@@ -119,8 +123,6 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
             ? returnText
             : ''
     }
-
-    //const calculateResult = (displayedText: string | null) => {}
 
     // whole logic for parantheses
     const addParantheses = (displayedText: string | null): void => {
@@ -154,7 +156,7 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
             } else {
                 upcomingSign = ')'
             }
-        setLocalStorageValue(
+        setLocalStorageValueInput(
             `${displayedText}${addMultiplication}${upcomingSign}`
         )
     }
@@ -179,6 +181,10 @@ const CalculatorTable: FC<Props> = ({ setLocalStorageValue }) => {
             if (displayedText.charAt(i) === ')') counterRightParantheses++
         }
         return counterRightParantheses
+    }
+
+    const calculateResult = (displayedText: string | null): void => {
+        setLocalStorageValueOutput(`The result from ${displayedText} is 5.`)
     }
 
     return (
