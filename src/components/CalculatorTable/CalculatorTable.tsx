@@ -26,7 +26,6 @@ const CalculatorTable: FC<Props> = ({
         left: 0,
         right: 0,
     })
-    const leftParenthesis = useRef<boolean>(true)
 
     // handles what is displayed on the display
     const handleDisplayText = (buttonText: string | number): void => {
@@ -37,6 +36,7 @@ const CalculatorTable: FC<Props> = ({
         } else if (buttonText === ',' && allowCommaUsage(displayedText)) {
             setLocalStorageValueInput(displayedText + buttonText.toString())
         } else if (buttonText === 'AC') {
+            setLocalStorageValueOutput('')
             setLocalStorageValueInput('')
             signIsPositive.current = true
         } else if (buttonText === 'DEL') {
@@ -131,14 +131,11 @@ const CalculatorTable: FC<Props> = ({
             right: calculateRightParantheses(displayedText),
         }
 
+        console.log(paranthesesCounter.current)
+
         let addMultiplication = ''
 
-        if (
-            paranthesesCounter.current.left === paranthesesCounter.current.right
-        )
-            leftParenthesis.current = true
-
-        let upcomingSign = leftParenthesis.current ? '(' : ')'
+        let upcomingSign = '('
 
         // whenever the user wants to have left parantheses and the last block is just
         // a set of numbers, a multiplication is added right in front of the parantheses
