@@ -139,20 +139,49 @@ const CalculatorTable: FC<Props> = ({
 
         // whenever the user wants to have left parantheses and the last block is just
         // a set of numbers, a multiplication is added right in front of the parantheses
+
+        // right paranthesis if the amount of left parantheses is greater than the amount of the right ones
+        if (paranthesesCounter.current.left > paranthesesCounter.current.right)
+            upcomingSign = ')'
+
+        // right paranthesis after number and if the amount of left parantheses is greater than the amount of the right
         if (
+            paranthesesCounter.current.left >
+                paranthesesCounter.current.right &&
             !isNaN(
                 parseInt(displayedText?.charAt(displayedText.length - 1) || '')
-            ) ||
-            paranthesesCounter.current.left === paranthesesCounter.current.right
+            )
         )
-            if (
+            upcomingSign = ')'
+        // left paranthesis after number and if the amount of left parantheses equals the amount of the right ones
+        // x right in front of the left paranthesis right after a number and if the amount of left parantheses is euqal to the amount of right ones
+        else if (
+            paranthesesCounter.current.left ===
+                paranthesesCounter.current.right &&
+            !isNaN(
+                parseInt(displayedText?.charAt(displayedText.length - 1) || '')
+            )
+        ) {
+            upcomingSign = '('
+            addMultiplication =
                 paranthesesCounter.current.left ===
                 paranthesesCounter.current.right
-            ) {
-                addMultiplication = displayedText ? ' x ' : ''
-            } else {
-                upcomingSign = ')'
-            }
+                    ? ' x '
+                    : ''
+        }
+
+        // x between right and left paranthesis if the amount of left parantheses euqals the amount of right ones
+        else if (
+            displayedText?.charAt(displayedText.length - 1) === ')' &&
+            paranthesesCounter.current.left === paranthesesCounter.current.right
+        )
+            addMultiplication = ' x '
+        // after a left paranthesis there is always another one
+        else if (displayedText?.charAt(displayedText.length - 1) === '(')
+            upcomingSign = '('
+        // there is a left paranthesis after an arithmetic operator
+        else if (displayedText?.endsWith(' ')) upcomingSign = '('
+
         setLocalStorageValueInput(
             `${displayedText}${addMultiplication}${upcomingSign}`
         )
