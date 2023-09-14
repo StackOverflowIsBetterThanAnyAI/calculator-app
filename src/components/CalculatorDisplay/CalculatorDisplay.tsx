@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import './CalculatorDisplay.css'
+import BlinkingCursor from '../BlinkingCursor/BlinkingCursor'
 
 type Props = {
     localStorageValueInput: string
@@ -12,7 +13,9 @@ const CalculatorDisplay: FC<Props> = ({
 }) => {
     return (
         <div className="calculatorDisplay">
-            {localStorageValueInput} <br />
+            {localStorageValueInput}
+            <BlinkingCursor />
+            <br />
             {localStorageValueOutput}
         </div>
     )

@@ -131,7 +131,11 @@ const CalculatorTable: FC<Props> = ({
             right: calculateRightParantheses(displayedText),
         }
 
-        console.log(displayedText?.charAt(displayedText.length - 1))
+        console.log(
+            displayedText?.charAt(displayedText.length - 1),
+            displayedText?.charAt(displayedText.length - 2),
+            displayedText?.charAt(displayedText.length - 3)
+        )
 
         let addMultiplication = ''
 
@@ -186,7 +190,13 @@ const CalculatorTable: FC<Props> = ({
             displayedText?.endsWith(' ') &&
             displayedText?.charAt(displayedText.length - 1) !== ')'
         )
-            upcomingSign = 'x ('
+            if (
+                ['+', '-', '/', 'x'].includes(
+                    displayedText?.charAt(displayedText.length - 2) || ''
+                )
+            )
+                upcomingSign = '('
+            else upcomingSign = 'x ('
         else if (
             ['+', '-', '/', 'x'].includes(
                 displayedText?.charAt(displayedText.length - 1) || ''
@@ -222,7 +232,17 @@ const CalculatorTable: FC<Props> = ({
     }
 
     const calculateResult = (displayedText: string | null): void => {
-        setLocalStorageValueOutput(`The result from ${displayedText} is 5.`)
+        const lastChar = displayedText?.slice(displayedText.length - 2) || ''
+        switch (lastChar) {
+            case '+ ':
+            case '- ':
+            case '/ ':
+            case 'x ':
+                displayedText =
+                    displayedText?.slice(0, displayedText?.length - 2) || ''
+                break
+        }
+        setLocalStorageValueOutput(`result ${displayedText} is 5.`)
     }
 
     return (
