@@ -131,14 +131,11 @@ const CalculatorTable: FC<Props> = ({
             right: calculateRightParantheses(displayedText),
         }
 
-        console.log(paranthesesCounter.current)
+        console.log(displayedText?.charAt(displayedText.length - 1))
 
         let addMultiplication = ''
 
         let upcomingSign = '('
-
-        // whenever the user wants to have left parantheses and the last block is just
-        // a set of numbers, a multiplication is added right in front of the parantheses
 
         // right paranthesis if the amount of left parantheses is greater than the amount of the right ones
         if (paranthesesCounter.current.left > paranthesesCounter.current.right)
@@ -180,7 +177,22 @@ const CalculatorTable: FC<Props> = ({
         else if (displayedText?.charAt(displayedText.length - 1) === '(')
             upcomingSign = '('
         // there is a left paranthesis after an arithmetic operator
-        else if (displayedText?.endsWith(' ')) upcomingSign = '('
+        else if (
+            displayedText?.endsWith(' ') &&
+            displayedText?.charAt(displayedText.length - 1) === ')'
+        )
+            upcomingSign = '('
+        else if (
+            displayedText?.endsWith(' ') &&
+            displayedText?.charAt(displayedText.length - 1) !== ')'
+        )
+            upcomingSign = 'x ('
+        else if (
+            ['+', '-', '/', 'x'].includes(
+                displayedText?.charAt(displayedText.length - 1) || ''
+            )
+        )
+            upcomingSign = ' ('
 
         setLocalStorageValueInput(
             `${displayedText}${addMultiplication}${upcomingSign}`
