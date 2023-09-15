@@ -119,7 +119,9 @@ const CalculatorTable: FC<Props> = ({
             ? `0 ${buttonText} `
             : ` ${buttonText} `
         return displayedText &&
-            displayedText.charAt(displayedText.length - 1) !== ' '
+            ![' ', '(', '+', '-', '/', 'x'].includes(
+                displayedText.charAt(displayedText.length - 1)
+            )
             ? returnText
             : ''
     }
@@ -231,7 +233,11 @@ const CalculatorTable: FC<Props> = ({
         return counterRightParantheses
     }
 
+    // calculates the result
     const calculateResult = (displayedText: string | null): void => {
+        while (displayedText?.charAt(displayedText.length - 1) === '(') {
+            displayedText = displayedText.slice(0, displayedText.length - 1)
+        }
         const lastChar = displayedText?.slice(displayedText.length - 2) || ''
         switch (lastChar) {
             case '+ ':
@@ -242,7 +248,8 @@ const CalculatorTable: FC<Props> = ({
                     displayedText?.slice(0, displayedText?.length - 2) || ''
                 break
         }
-        setLocalStorageValueOutput(`result ${displayedText} is 5.`)
+        // TODO: add missing ')'s
+        setLocalStorageValueOutput(`result: ${displayedText} is 5.`)
     }
 
     return (
