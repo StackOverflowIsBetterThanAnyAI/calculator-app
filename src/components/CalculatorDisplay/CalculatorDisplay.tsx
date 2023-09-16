@@ -16,7 +16,9 @@ const CalculatorDisplay: FC<Props> = ({
             {localStorageValueInput}
             <BlinkingCursor />
             <br />
-            {localStorageValueOutput}
+            <span className="calculatorDisplay-result">
+                {localStorageValueOutput}
+            </span>
         </div>
     )
 }
