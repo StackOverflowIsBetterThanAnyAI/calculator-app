@@ -18,8 +18,8 @@ const CalculatorTable: FC<Props> = ({
     // current value in local storage
     const displayedText = localStorage.getItem('display')
 
-    // ref of algebraic sign (positive or negative value)
-    const signIsPositive = useRef<boolean>(true)
+    // ref for current set of numbers
+    const currentSetOfNumbers = useRef<number>(0)
 
     // ref for parantheses calculations (left or right parantheses)
     const paranthesesCounter = useRef<{ left: number; right: number }>({
@@ -30,20 +30,16 @@ const CalculatorTable: FC<Props> = ({
     // handles what is displayed on the display
     const handleDisplayText = (buttonText: string | number): void => {
         if (typeof buttonText === 'number') {
-            setLocalStorageValueInput(
-                checkForStartingZero(displayedText) + buttonText.toString()
-            )
+            handleNumberInput(displayedText, buttonText)
         } else if (buttonText === ',' && allowCommaUsage(displayedText)) {
             setLocalStorageValueInput(displayedText + buttonText.toString())
         } else if (buttonText === 'AC') {
             setLocalStorageValueOutput('')
             setLocalStorageValueInput('')
-            signIsPositive.current = true
         } else if (buttonText === 'DEL') {
             setLocalStorageValueInput(
                 displayedText?.slice(0, displayedText.length - 1) || ''
             )
-            if (displayedText === '') signIsPositive.current = true
         } else if (buttonText === '+/-') checkForAlgebraicSign(displayedText)
         else if (['+', '-', '/', 'x'].includes(buttonText))
             setLocalStorageValueInput(
@@ -73,7 +69,41 @@ const CalculatorTable: FC<Props> = ({
         return displayedText || ''
     }
 
-    // chekcs if the user is allowed to use a Comma
+    // checks if last Character is ')'
+    const checkForClosingParanthesis = (
+        displayedText: string | null
+    ): string => {
+        if (displayedText?.charAt(displayedText.length - 1) === ')')
+            return ' x '
+        return ''
+    }
+
+    // checks if space after arithmetic operator has been deleted
+    const checkForDeletedSpace = (displayedText: string | null): string => {
+        if (
+            displayedText &&
+            ['+', '-', '/', 'x'].includes(
+                displayedText?.charAt(displayedText.length - 1)
+            )
+        )
+            return ' '
+        return ''
+    }
+
+    // whole logic for number inputs
+    const handleNumberInput = (
+        displayedText: string | null,
+        buttonText: number
+    ): void => {
+        setLocalStorageValueInput(
+            checkForStartingZero(displayedText) +
+                checkForClosingParanthesis(displayedText) +
+                checkForDeletedSpace(displayedText) +
+                buttonText.toString()
+        )
+    }
+
+    // checks if the user is allowed to use a Comma
     const allowCommaUsage = (displayedText: string | null): boolean => {
         // no Comma is allowed in the beginning of a new set of numbers
         if (!displayedText) return false
@@ -90,20 +120,62 @@ const CalculatorTable: FC<Props> = ({
         return true
     }
 
-    // toggles the algebraic sign of the first set of numbers, TODO: change it for every set
+    // toggles the algebraic sign for the current set of numbers
     const checkForAlgebraicSign = (displayedText: string | null): void => {
-        signIsPositive.current = toggleAlgebraicSign(signIsPositive.current)
-        const symbol = signIsPositive.current ? '' : '-'
+        const splitText = displayedText
+            ?.split(' ')
+            .filter((item) => item !== '')
+        // the content of the current set of numbers
+        currentSetOfNumbers.current = splitText
+            ? parseInt(splitText[splitText.length - 1])
+            : -1
 
-        if (displayedText?.charAt(0) === '-') {
-            displayedText = displayedText.slice(1)
+        // if latest set of numbers only contains +, -, / or x, no toggle should happen
+        if (
+            isNaN(currentSetOfNumbers.current) &&
+            splitText &&
+            splitText[splitText.length - 1].length === 1
+        )
+            return
+
+        // the sets which are not the current one
+        const splicedText: string =
+            splitText?.splice(0, splitText.length - 1).join(' ') || ''
+
+        // calculates the amount of parantheses
+        let paranthesesCounter = 0
+        for (let i = 0; i < (splitText?.toString().length ?? 1); i++) {
+            if (splitText?.toString().charAt(i) === '(') {
+                paranthesesCounter++
+            } else break
         }
-        setLocalStorageValueInput(symbol + displayedText)
-    }
 
-    // toggles the state for the algebraic sign
-    const toggleAlgebraicSign = (currentSign: boolean) => {
-        return !currentSign
+        // if the current number of sets is not negative ...
+        if (
+            !splitText
+                ?.toString()
+                .substring(paranthesesCounter - 1)
+                .startsWith('(-')
+        )
+            // ... set the input to the sets which have not been touched, the persisting parantheses, (- and the actual set of numbers ...
+            setLocalStorageValueInput(
+                `${splicedText} ${splitText
+                    ?.toString()
+                    .substring(0, paranthesesCounter)}(-${splitText
+                    ?.toString()
+                    .substring(paranthesesCounter)}`
+            )
+        // ... otherwise set the input to the sets which have not been touched, the persisting parantheses and the current set of numbers,
+        // but remove one paranthesis and the negative sign
+        else
+            setLocalStorageValueInput(
+                `${splicedText} ${splitText
+                    .toString()
+                    .substring(0, paranthesesCounter - 1)}${splitText
+                    .toString()
+                    .substring(paranthesesCounter - 1)
+                    .slice(2)}`
+            )
     }
 
     // logic for the four arithmetic operators + - / x
@@ -234,19 +306,7 @@ const CalculatorTable: FC<Props> = ({
             right: calculateRightParantheses(displayedText),
         }
 
-        while (displayedText?.charAt(displayedText.length - 1) === '(') {
-            displayedText = displayedText.slice(0, displayedText.length - 1)
-        }
-        const lastChar = displayedText?.slice(displayedText.length - 2) || ''
-        switch (lastChar) {
-            case '+ ':
-            case '- ':
-            case '/ ':
-            case 'x ':
-                displayedText =
-                    displayedText?.slice(0, displayedText?.length - 2) || ''
-                break
-        }
+        // adds missing closing parantheses
         for (
             let i = 0;
             i <
@@ -254,6 +314,27 @@ const CalculatorTable: FC<Props> = ({
             i++
         ) {
             displayedText += ')'
+        }
+
+        // removes unnecessary opening parantheses
+        while (displayedText?.charAt(displayedText.length - 1) === '(') {
+            displayedText = displayedText.slice(0, displayedText.length - 1)
+        }
+
+        // removes unnecessary set of parantheses
+        if (displayedText?.slice(displayedText.length - 2) === '()')
+            displayedText =
+                displayedText?.slice(0, displayedText?.length - 2) || ''
+
+        // removes all arithmetic operators if they are at the end
+        switch (displayedText?.slice(displayedText.length - 3)) {
+            case ' + ':
+            case ' - ':
+            case ' / ':
+            case ' x ':
+                displayedText =
+                    displayedText?.slice(0, displayedText?.length - 3) || ''
+                break
         }
         setLocalStorageValueOutput(`result: ${displayedText} is 5.`)
         setLocalStorageValueInput(displayedText || '')
