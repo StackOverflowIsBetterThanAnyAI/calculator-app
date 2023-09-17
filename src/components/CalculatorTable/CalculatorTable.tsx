@@ -62,7 +62,7 @@ const CalculatorTable: FC<Props> = ({
         } else if (buttonText === '()') {
             addParantheses(displayedText)
             setLocalStorageValueOutput('')
-        } else if (buttonText === '=') calculateResult(displayedText)
+        } else if (buttonText === '=') displayResult(displayedText)
     }
 
     // whole logic for number inputs
@@ -222,7 +222,7 @@ const CalculatorTable: FC<Props> = ({
     }
 
     // calculates the result
-    const calculateResult = (displayedText: string | null): void => {
+    const displayResult = (displayedText: string | null): void => {
         paranthesesCounter.current = {
             left: CalculatorLogic.calculateLeftParantheses(displayedText),
             right: CalculatorLogic.calculateRightParantheses(displayedText),
@@ -271,6 +271,7 @@ const CalculatorTable: FC<Props> = ({
                     displayedText?.slice(0, displayedText?.length - 3) || ''
                 break
         }
+        CalculatorLogic.calculateResult(displayedText)
         setLocalStorageValueOutput(`Result: ${displayedText}`)
         setLocalStorageValueInput(displayedText || '')
     }

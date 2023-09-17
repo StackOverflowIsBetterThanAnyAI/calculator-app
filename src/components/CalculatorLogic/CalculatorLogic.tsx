@@ -123,3 +123,13 @@ export const removeSetOfParantheses = (
     splitText = splitText?.filter((item) => item !== '')
     return splitText ? splitText[splitText.length - 1] : ''
 }
+
+export const calculateResult = (displayedText: string | null): string => {
+    if (!displayedText) return ''
+
+    // Klammer vor Punkt vor Strich
+    const splitText = displayedText.split(' ')
+    console.log(splitText)
+    // first scan the packages if they contain parantheses, if not: check for x and /, if not: calculate from left to right
+    return displayedText
+}
