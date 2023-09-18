@@ -70,7 +70,7 @@ export const addArithmeticOperator = (
         !['(', '+', '-', '/', 'x'].includes(
             displayedText.charAt(displayedText.length - 1)
         ) &&
-        !['(', '+', '-', '/', 'x'].includes(
+        !['+', '-', '/', 'x'].includes(
             displayedText.charAt(displayedText.length - 2)
         )
         ? returnText
@@ -127,9 +127,94 @@ export const removeSetOfParantheses = (
 export const calculateResult = (displayedText: string | null): string => {
     if (!displayedText) return ''
 
-    // Klammer vor Punkt vor Strich
     const splitText = displayedText.split(' ')
-    console.log(splitText)
-    // first scan the packages if they contain parantheses, if not: check for x and /, if not: calculate from left to right
+    const calculationContent = {
+        parantheses: splitText.some((content) => content.includes('(')),
+        points: splitText.some(
+            (content) => content.includes('x') || content.includes('/')
+        ),
+        dashes: splitText.some(
+            (content) => content.includes('+') || content.includes('-')
+        ),
+    }
+    if (
+        calculationContent.dashes &&
+        !calculationContent.parantheses &&
+        !calculationContent.points
+    ) {
+        // splitText:   0   1   2   3   4   5   6
+        //              123 +   123 +   123 +   123
+        let result = 0
+
+        for (let i = 0; i < splitText.length; i++) {
+            if (i <= splitText.length - 2) {
+                switch (splitText[i + 1]) {
+                    case '+':
+                        result =
+                            i === 0
+                                ? parseInt(splitText[i]) +
+                                  parseInt(splitText[i + 2])
+                                : result + parseInt(splitText[i + 2])
+                        break
+                    case '-':
+                        result =
+                            i === 0
+                                ? parseInt(splitText[i]) -
+                                  parseInt(splitText[i + 2])
+                                : result - parseInt(splitText[i + 2])
+                        break
+                }
+            }
+            console.log('FOR', result)
+        }
+    }
+    if (calculationContent.points && !calculationContent.parantheses) {
+        // splitText:   0   1   2   3   4   5   6   7   8   9   10  11  12
+        //              122 +   123 x   124 +   125 +   126 x   127 +   128
+        // scan every odd index for x or /
+        // create a function that solves this pair and returns it afterwards
+        // a new array is created with the old items and the returned value
+
+        const pointSolvedCalculation = []
+        for (let i = 1; i < splitText.length; i += 2) {
+            console.log(i)
+            if (['x', '/'].includes(splitText[i])) {
+                /*const result = solvePointCalculation(
+                    splitText[i - 1],
+                    splitText[i],
+                    splitText[i + 1]
+                )
+                console.log(result, 'result')
+
+                const updatedSplitText = splitText
+                    .slice(0, i - 1)
+                    .concat(result)
+                    .concat(splitText.slice(3, splitText.length))
+                console.log(splitText, 'splitText')
+                console.log(updatedSplitText, 'updatedSplitText')*/
+                pointSolvedCalculation.push(
+                    solvePointCalculation(
+                        splitText[i - 1],
+                        splitText[i],
+                        splitText[i + 1]
+                    )
+                )
+            } else pointSolvedCalculation.push(splitText[i - 1], splitText[i])
+        }
+        console.log(pointSolvedCalculation)
+    }
     return displayedText
+}
+
+const solvePointCalculation = (
+    valueOne: string,
+    algebraicSign: string,
+    valueTwo: string
+): string => {
+    switch (algebraicSign) {
+        case 'x':
+            return (parseInt(valueOne) * parseInt(valueTwo)).toString()
+        default:
+            return (parseInt(valueOne) / parseInt(valueTwo)).toString()
+    }
 }

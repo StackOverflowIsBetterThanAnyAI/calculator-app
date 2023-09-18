@@ -243,6 +243,14 @@ const CalculatorTable: FC<Props> = ({
             displayedText = displayedText.slice(0, displayedText.length - 1)
         }
 
+        // removes unnecessary closing paranthesis which could have been left by toggling the algebraic sign
+        if (
+            displayedText?.charAt(displayedText.length - 1) === ')' &&
+            paranthesesCounter.current.right ===
+                paranthesesCounter.current.left + 1
+        )
+            displayedText = displayedText.slice(0, displayedText.length - 1)
+
         // create array with set of numbers
         const splitText: string[] | undefined = displayedText
             ?.split(' ')

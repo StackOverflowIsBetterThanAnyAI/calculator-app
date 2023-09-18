@@ -3,6 +3,8 @@
     width: 128px;
     border-radius: 50%;
     border: none;
+    margin: 0;
+    padding: 0;
 }
 
 .calculatorButton:hover {
