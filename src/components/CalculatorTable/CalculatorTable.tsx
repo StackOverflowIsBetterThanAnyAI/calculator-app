@@ -279,8 +279,9 @@ const CalculatorTable: FC<Props> = ({
                     displayedText?.slice(0, displayedText?.length - 3) || ''
                 break
         }
-        CalculatorLogic.calculateResult(displayedText)
-        setLocalStorageValueOutput(`Result: ${displayedText}`)
+        setLocalStorageValueOutput(
+            `Result: ${CalculatorLogic.calculateResult(displayedText)}`
+        )
         setLocalStorageValueInput(displayedText || '')
     }
 

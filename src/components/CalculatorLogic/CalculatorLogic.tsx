@@ -100,6 +100,8 @@ export const calculateRightParantheses = (
     }
     return counterRightParantheses
 }
+
+// removes a set of unused parantheses at the end of the input string
 export const removeSetOfParantheses = (
     splitText: string[] | undefined
 ): string => {
@@ -124,74 +126,55 @@ export const removeSetOfParantheses = (
     return splitText ? splitText[splitText.length - 1] : ''
 }
 
+// calculates the result and returns a string to the display
 export const calculateResult = (displayedText: string | null): string => {
     if (!displayedText) return ''
 
-    const splitText = displayedText.split(' ')
-    const calculationContent = {
-        parantheses: splitText.some((content) => content.includes('(')),
-        points: splitText.some(
-            (content) => content.includes('x') || content.includes('/')
-        ),
-        dashes: splitText.some(
-            (content) => content.includes('+') || content.includes('-')
-        ),
-    }
-    if (
-        calculationContent.dashes &&
-        !calculationContent.parantheses &&
-        !calculationContent.points
-    ) {
-        // splitText:   0   1   2   3   4   5   6
-        //              123 +   123 +   123 +   123
-        let result = 0
+    // array which contains every set of numbers
+    let splitText = displayedText.split(' ')
+    console.log(splitText, displayedText, 'splitText, displayedText 1')
 
-        for (let i = 0; i < splitText.length; i++) {
-            if (i <= splitText.length - 2) {
-                switch (splitText[i + 1]) {
-                    case '+':
-                        result =
-                            i === 0
-                                ? parseInt(splitText[i]) +
-                                  parseInt(splitText[i + 2])
-                                : result + parseInt(splitText[i + 2])
-                        break
-                    case '-':
-                        result =
-                            i === 0
-                                ? parseInt(splitText[i]) -
-                                  parseInt(splitText[i + 2])
-                                : result - parseInt(splitText[i + 2])
-                        break
-                }
-            }
-            console.log('FOR', result)
-        }
-    }
+    // first calculation if the array contains parantheses, points or dashes
+    let calculationContent = returnCalculationContent(splitText)
+    console.log(calculationContent, 'calculationContent 1')
+
     if (calculationContent.points && !calculationContent.parantheses) {
-        // splitText:   0   1   2   3   4   5   6   7   8   9   10  11  12
-        //              122 +   123 x   124 +   125 +   126 x   127 +   128
-        // scan every odd index for x or /
-        // create a function that solves this pair and returns it afterwards
-        // a new array is created with the old items and the returned value
+        displayedText = recursivePointCalculation(splitText).join(' ')
+    }
 
-        const pointSolvedCalculation = []
-        for (let i = 1; i < splitText.length; i += 2) {
-            console.log(i)
-            if (['x', '/'].includes(splitText[i])) {
-                /*const result = solvePointCalculation(
-                    splitText[i - 1],
-                    splitText[i],
-                    splitText[i + 1]
-                )
-                console.log(result, 'result')
+    splitText = displayedText.split(' ')
+    console.log(splitText, displayedText, 'splitText, displayedText 2')
 
-                const updatedSplitText = splitText
-                    .slice(0, i - 1)
-                    .concat(result)
-                    .concat(splitText.slice(3, splitText.length))
-                console.log(splitText, 'splitText')
-                console.log(updatedSplitText, 'updatedSplitText')*/
+    calculationContent = returnCalculationContent(splitText)
+    console.log(calculationContent, 'calculationContent 2')
+
+    if (calculationContent.dashes && !calculationContent.parantheses) {
+        displayedText = solveDashCalculation(splitText)
+    }
+
+    return displayedText
+}
+
+// as long as there is a multiplication or division sign in the array,
+// this function is calling itself and removes the signs by calculating results step by step
+const recursivePointCalculation = (splitText: string[]): string[] => {
+    console.log(splitText, 'splitText rec')
+    const pointSolvedCalculation = []
+    let prevMultAdded: boolean = false
+    for (let i = 1; i < splitText.length; i += 2) {
+        if (['x', '/'].includes(splitText[i])) {
+            if (['x', '/'].includes(splitText[i - 2]) && prevMultAdded) {
+                if (['x', '/'].includes(splitText[i + 2])) {
+                    pointSolvedCalculation.push(splitText[i])
+                    prevMultAdded = false
+                } else {
+                    pointSolvedCalculation.push(splitText[i], splitText[i + 1])
+                    prevMultAdded = false
+                }
+            } else if (
+                ['x', '/'].includes(splitText[i - 2]) &&
+                !prevMultAdded
+            ) {
                 pointSolvedCalculation.push(
                     solvePointCalculation(
                         splitText[i - 1],
@@ -199,13 +182,60 @@ export const calculateResult = (displayedText: string | null): string => {
                         splitText[i + 1]
                     )
                 )
-            } else pointSolvedCalculation.push(splitText[i - 1], splitText[i])
+
+                prevMultAdded = true
+            } else {
+                pointSolvedCalculation.push(
+                    solvePointCalculation(
+                        splitText[i - 1],
+                        splitText[i],
+                        splitText[i + 1]
+                    )
+                )
+                prevMultAdded = true
+            }
+        } else if (
+            i === splitText.length - 2 &&
+            ['+', '-'].includes(splitText[i])
+        )
+            if (['x', '/'].includes(splitText[i - 2])) {
+                pointSolvedCalculation.push(splitText[i], splitText[i + 1])
+                prevMultAdded = false
+            } else {
+                pointSolvedCalculation.push(
+                    splitText[i - 1],
+                    splitText[i],
+                    splitText[i + 1]
+                )
+                prevMultAdded = false
+            }
+        else if (['x', '/'].includes(splitText[i - 2])) {
+            pointSolvedCalculation.push(splitText[i])
+            prevMultAdded = false
+        } else {
+            pointSolvedCalculation.push(splitText[i - 1], splitText[i])
+            prevMultAdded = false
         }
-        console.log(pointSolvedCalculation)
     }
-    return displayedText
+    console.log(pointSolvedCalculation, 'pointSolvedCalculation rec')
+    // enything after + or - is cut off, but only when there is a x or / before the first + or - and if there are at least two x's or /'s
+    let recursiveResult
+    for (let i = 0; i < pointSolvedCalculation.length; i++) {
+        if (['x', '/'].includes(pointSolvedCalculation[i]))
+            recursiveResult = recursivePointCalculation([
+                pointSolvedCalculation[i - 1],
+                pointSolvedCalculation[i],
+                pointSolvedCalculation[i + 1],
+            ])
+        recursiveResult &&
+            pointSolvedCalculation.splice(i - 1, 3, recursiveResult[0])
+        recursiveResult && i--
+    }
+    console.log(pointSolvedCalculation, 'pointSolvedCalculation is returned')
+    return pointSolvedCalculation
 }
 
+// solves point calculations if algebraic sign is x or /
 const solvePointCalculation = (
     valueOne: string,
     algebraicSign: string,
@@ -217,4 +247,52 @@ const solvePointCalculation = (
         default:
             return (parseInt(valueOne) / parseInt(valueTwo)).toString()
     }
+}
+
+// solves dashes only calculations
+const solveDashCalculation = (splitText: string[]): string => {
+    console.log(splitText, 'splitText dash')
+    let result = 0
+
+    for (let i = 0; i < splitText.length; i++) {
+        if (i <= splitText.length - 2) {
+            switch (splitText[i + 1]) {
+                case '+':
+                    result =
+                        i === 0
+                            ? parseInt(splitText[i]) +
+                              parseInt(splitText[i + 2])
+                            : result + parseInt(splitText[i + 2])
+                    break
+                case '-':
+                    result =
+                        i === 0
+                            ? parseInt(splitText[i]) -
+                              parseInt(splitText[i + 2])
+                            : result - parseInt(splitText[i + 2])
+                    break
+            }
+        }
+    }
+    console.log(result, 'result is returned')
+    return result.toString()
+}
+
+// returns an object which tells you if the input contains parantheses, + or /, and + or -
+const returnCalculationContent = (splitText: string[] | null) => {
+    return splitText
+        ? {
+              parantheses: splitText.some((content) => content.includes('(')),
+              points: splitText.some(
+                  (content) => content.includes('x') || content.includes('/')
+              ),
+              dashes: splitText.some(
+                  (content) => content.includes('+') || content.includes('-')
+              ),
+          }
+        : {
+              parantheses: false,
+              points: false,
+              dashes: false,
+          }
 }
