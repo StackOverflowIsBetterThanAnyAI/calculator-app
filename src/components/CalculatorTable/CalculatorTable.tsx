@@ -256,7 +256,7 @@ const CalculatorTable: FC<Props> = ({
             ?.split(' ')
             .filter((item) => item !== '')
 
-        CalculatorLogic.removeSetOfParantheses(splitText)
+        splitText && CalculatorLogic.removeSetOfParantheses(splitText)
         displayedText = splitText?.join(' ') || ''
 
         // removes all arithmetic operators if they are at the end
@@ -279,9 +279,10 @@ const CalculatorTable: FC<Props> = ({
                     displayedText?.slice(0, displayedText?.length - 3) || ''
                 break
         }
-        setLocalStorageValueOutput(
-            `Result: ${CalculatorLogic.calculateResult(displayedText)}`
-        )
+        displayedText &&
+            setLocalStorageValueOutput(
+                `Result: ${CalculatorLogic.calculateResult(displayedText)}`
+            )
         setLocalStorageValueInput(displayedText || '')
     }
 

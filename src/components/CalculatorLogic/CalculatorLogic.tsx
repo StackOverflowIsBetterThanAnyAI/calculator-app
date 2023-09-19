@@ -4,7 +4,11 @@ export const checkForStartingZero = (displayedText: string | null): string => {
     const numberToCheck = splitDisplayedText ? splitDisplayedText.length - 1 : 0
 
     // the latest set of numbers is checked if it starts with a '0' and a Comma
-    for (let i = 0; i < splitDisplayedText[numberToCheck].length; i++) {
+    for (
+        let i = 0;
+        i < (splitDisplayedText ? splitDisplayedText[numberToCheck].length : 1);
+        i++
+    ) {
         if (
             splitDisplayedText[numberToCheck].charAt(0) === '0' &&
             splitDisplayedText[numberToCheck].charAt(1) !== ','
@@ -105,12 +109,8 @@ export const calculateRightParantheses = (
 export const removeSetOfParantheses = (
     splitText: string[] | undefined
 ): string => {
-    for (
-        let i = 0;
-        i < (splitText ? splitText[splitText.length - 1].length : 1);
-        i++
-    ) {
-        if (!splitText) return ''
+    if (!splitText) return ''
+    for (let i = 0; i < splitText[splitText.length - 1]?.length; i++) {
         if (
             splitText[splitText.length - 1].charAt(i) === '(' &&
             splitText[splitText.length - 1].charAt(i + 1) === ')'
@@ -122,8 +122,8 @@ export const removeSetOfParantheses = (
             removeSetOfParantheses(newSplitText)
         }
     }
-    splitText = splitText?.filter((item) => item !== '')
-    return splitText ? splitText[splitText.length - 1] : ''
+    splitText = splitText.filter((item) => item !== '')
+    return splitText[splitText.length - 1]
 }
 
 // calculates the result and returns a string to the display
@@ -161,7 +161,7 @@ const recursivePointCalculation = (splitText: string[]): string[] => {
     console.log(splitText, 'splitText rec')
     const pointSolvedCalculation = []
     let prevMultAdded: boolean = false
-    for (let i = 1; i < splitText.length; i += 2) {
+    for (let i = 1; i < splitText?.length; i += 2) {
         if (['x', '/'].includes(splitText[i])) {
             if (['x', '/'].includes(splitText[i - 2]) && prevMultAdded) {
                 if (['x', '/'].includes(splitText[i + 2])) {
@@ -220,7 +220,7 @@ const recursivePointCalculation = (splitText: string[]): string[] => {
     console.log(pointSolvedCalculation, 'pointSolvedCalculation rec')
     // enything after + or - is cut off, but only when there is a x or / before the first + or - and if there are at least two x's or /'s
     let recursiveResult
-    for (let i = 0; i < pointSolvedCalculation.length; i++) {
+    for (let i = 0; i < pointSolvedCalculation?.length; i++) {
         if (['x', '/'].includes(pointSolvedCalculation[i])) {
             recursiveResult = recursivePointCalculation([
                 pointSolvedCalculation[i - 1],
@@ -255,8 +255,8 @@ const solveDashCalculation = (splitText: string[]): string => {
     console.log(splitText, 'splitText dash')
     let result = 0
 
-    for (let i = 0; i < splitText.length; i++) {
-        if (i <= splitText.length - 2) {
+    for (let i = 0; i < splitText?.length; i++) {
+        if (i <= splitText?.length - 2) {
             switch (splitText[i + 1]) {
                 case '+':
                     result =
