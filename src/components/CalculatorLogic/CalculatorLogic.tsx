@@ -221,15 +221,16 @@ const recursivePointCalculation = (splitText: string[]): string[] => {
     // enything after + or - is cut off, but only when there is a x or / before the first + or - and if there are at least two x's or /'s
     let recursiveResult
     for (let i = 0; i < pointSolvedCalculation.length; i++) {
-        if (['x', '/'].includes(pointSolvedCalculation[i]))
+        if (['x', '/'].includes(pointSolvedCalculation[i])) {
             recursiveResult = recursivePointCalculation([
                 pointSolvedCalculation[i - 1],
                 pointSolvedCalculation[i],
                 pointSolvedCalculation[i + 1],
             ])
-        recursiveResult &&
-            pointSolvedCalculation.splice(i - 1, 3, recursiveResult[0])
-        recursiveResult && i--
+            recursiveResult &&
+                pointSolvedCalculation.splice(i - 1, 3, recursiveResult[0])
+            recursiveResult && i--
+        }
     }
     console.log(pointSolvedCalculation, 'pointSolvedCalculation is returned')
     return pointSolvedCalculation
