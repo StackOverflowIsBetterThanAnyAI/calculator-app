@@ -132,21 +132,16 @@ export const calculateResult = (displayedText: string | null): string => {
 
     // array which contains every set of numbers
     let splitText = displayedText.split(' ')
-    console.log(splitText, displayedText, 'splitText, displayedText 1')
 
     // first calculation if the array contains parantheses, points or dashes
     let calculationContent = returnCalculationContent(splitText)
-    console.log(calculationContent, 'calculationContent 1')
 
     if (calculationContent.points && !calculationContent.parantheses) {
         displayedText = recursivePointCalculation(splitText).join(' ')
     }
 
     splitText = displayedText.split(' ')
-    console.log(splitText, displayedText, 'splitText, displayedText 2')
-
     calculationContent = returnCalculationContent(splitText)
-    console.log(calculationContent, 'calculationContent 2')
 
     if (calculationContent.dashes && !calculationContent.parantheses) {
         displayedText = solveDashCalculation(splitText)
@@ -158,7 +153,6 @@ export const calculateResult = (displayedText: string | null): string => {
 // as long as there is a multiplication or division sign in the array,
 // this function is calling itself and removes the signs by calculating results step by step
 const recursivePointCalculation = (splitText: string[]): string[] => {
-    console.log(splitText, 'splitText rec')
     const pointSolvedCalculation = []
     let prevMultAdded: boolean = false
     for (let i = 1; i < splitText?.length; i += 2) {
@@ -217,7 +211,7 @@ const recursivePointCalculation = (splitText: string[]): string[] => {
             prevMultAdded = false
         }
     }
-    console.log(pointSolvedCalculation, 'pointSolvedCalculation rec')
+
     // enything after + or - is cut off, but only when there is a x or / before the first + or - and if there are at least two x's or /'s
     let recursiveResult
     for (let i = 0; i < pointSolvedCalculation?.length; i++) {
@@ -232,7 +226,6 @@ const recursivePointCalculation = (splitText: string[]): string[] => {
             recursiveResult && i--
         }
     }
-    console.log(pointSolvedCalculation, 'pointSolvedCalculation is returned')
     return pointSolvedCalculation
 }
 
@@ -252,7 +245,6 @@ const solvePointCalculation = (
 
 // solves dashes only calculations
 const solveDashCalculation = (splitText: string[]): string => {
-    console.log(splitText, 'splitText dash')
     let result = 0
 
     for (let i = 0; i < splitText?.length; i++) {
@@ -275,7 +267,6 @@ const solveDashCalculation = (splitText: string[]): string => {
             }
         }
     }
-    console.log(result, 'result is returned')
     return result.toString()
 }
 
