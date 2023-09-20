@@ -281,7 +281,15 @@ const CalculatorTable: FC<Props> = ({
         }
         displayedText &&
             setLocalStorageValueOutput(
-                `Result: ${CalculatorLogic.calculateResult(displayedText)}`
+                isNaN(
+                    parseInt(CalculatorLogic.calculateResult(displayedText))
+                ) ||
+                    CalculatorLogic.calculateResult(displayedText) ===
+                        'Infinity'
+                    ? `Please do not devide by zero.`
+                    : `Result: ${CalculatorLogic.calculateResult(
+                          displayedText
+                      )}`
             )
         setLocalStorageValueInput(displayedText || '')
     }
