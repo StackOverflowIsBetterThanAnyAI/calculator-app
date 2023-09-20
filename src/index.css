@@ -1,9 +1,26 @@
+@media only screen and (max-width: 544px) {
+    body {
+        font-size: 8vw;
+    }
+    button {
+        font-size: 8vw;
+    }
+}
+
+@media only screen and (min-width: 544px) {
+    body {
+        font-size: 36px;
+    }
+    button {
+        font-size: 36px;
+    }
+}
+
 body {
     background-color: rgb(209, 143, 127);
     color: rgb(12, 12, 12);
     margin: 0 auto;
     font-family: 'Poppins-Regular';
-    font-size: 36px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     max-width: 544px;
@@ -11,7 +28,6 @@ body {
 
 button {
     font-family: 'Poppins-Regular';
-    font-size: 36px;
 }
 
 @font-face {

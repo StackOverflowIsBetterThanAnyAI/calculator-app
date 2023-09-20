@@ -1,4 +1,15 @@
+@media only screen and (max-width: 544px) {
+    .calculator-container {
+        padding: 2vw;
+    }
+}
+
+@media only screen and (min-width: 544px) {
+    .calculator-container {
+        padding: 12px;
+    }
+}
+
 .calculator-container {
     background-color: rgb(204, 127, 104);
-    padding: 12px;
 }

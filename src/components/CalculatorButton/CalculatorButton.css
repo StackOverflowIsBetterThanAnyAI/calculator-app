@@ -1,6 +1,18 @@
+@media only screen and (max-width: 544px) {
+    .calculatorButton {
+        height: 23.5vw;
+        width: 23.5vw;
+    }
+}
+
+@media only screen and (min-width: 544px) {
+    .calculatorButton {
+        height: 128px;
+        width: 128px;
+    }
+}
+
 .calculatorButton {
-    height: 128px;
-    width: 128px;
     border-radius: 50%;
     border: none;
     margin: 0;
