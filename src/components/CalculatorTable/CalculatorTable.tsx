@@ -51,13 +51,14 @@ const CalculatorTable: FC<Props> = ({
             checkForAlgebraicSign(displayedText)
             setLocalStorageValueOutput('')
         } else if (['+', '-', '/', 'x'].includes(buttonText)) {
-            setLocalStorageValueInput(
-                displayedText +
-                    CalculatorLogic.addArithmeticOperator(
-                        displayedText,
-                        buttonText
-                    )
-            )
+            displayedText !== null &&
+                setLocalStorageValueInput(
+                    displayedText +
+                        CalculatorLogic.addArithmeticOperator(
+                            displayedText,
+                            buttonText
+                        )
+                )
             setLocalStorageValueOutput('')
         } else if (buttonText === '()') {
             addParantheses(displayedText)
@@ -72,7 +73,9 @@ const CalculatorTable: FC<Props> = ({
     ): void => {
         if (
             displayedText &&
-            !isNaN(parseInt(displayedText?.charAt(displayedText.length - 2))) &&
+            !isNaN(
+                parseFloat(displayedText?.charAt(displayedText.length - 2))
+            ) &&
             displayedText?.charAt(displayedText.length - 1) === ' '
         )
             return
@@ -86,12 +89,14 @@ const CalculatorTable: FC<Props> = ({
 
     // toggles the algebraic sign for the current set of numbers
     const checkForAlgebraicSign = (displayedText: string | null): void => {
+        // no actions allowed if the displayedText is equal to the default text or null
+        if (!displayedText) return
         const splitText: string[] | undefined = displayedText
             ?.split(' ')
             .filter((item) => item !== '')
         // the content of the current set of numbers
         currentSetOfNumbers.current = splitText
-            ? parseInt(splitText[splitText.length - 1])
+            ? parseFloat(splitText[splitText.length - 1])
             : -1
 
         // if latest set of numbers only contains +, -, / or x, no toggle should happen
@@ -162,7 +167,9 @@ const CalculatorTable: FC<Props> = ({
             paranthesesCounter.current.left >
                 paranthesesCounter.current.right &&
             !isNaN(
-                parseInt(displayedText?.charAt(displayedText.length - 1) || '')
+                parseFloat(
+                    displayedText?.charAt(displayedText.length - 1) || ''
+                )
             )
         )
             upcomingSign = ')'
@@ -172,7 +179,9 @@ const CalculatorTable: FC<Props> = ({
             paranthesesCounter.current.left ===
                 paranthesesCounter.current.right &&
             !isNaN(
-                parseInt(displayedText?.charAt(displayedText.length - 1) || '')
+                parseFloat(
+                    displayedText?.charAt(displayedText.length - 1) || ''
+                )
             )
         ) {
             upcomingSign = '('
@@ -217,7 +226,7 @@ const CalculatorTable: FC<Props> = ({
             upcomingSign = ' ('
 
         setLocalStorageValueInput(
-            `${displayedText}${addMultiplication}${upcomingSign}`
+            `${displayedText || ''}${addMultiplication}${upcomingSign}`
         )
     }
 
@@ -226,6 +235,31 @@ const CalculatorTable: FC<Props> = ({
         paranthesesCounter.current = {
             left: CalculatorLogic.calculateLeftParantheses(displayedText),
             right: CalculatorLogic.calculateRightParantheses(displayedText),
+        }
+
+        console.log(displayedText?.slice(displayedText.length - 2))
+        console.log(displayedText?.slice(displayedText.length - 3))
+        console.log(displayedText)
+
+        // removes all arithmetic operators if they are at the end and the space was deleted
+        switch (displayedText?.slice(displayedText.length - 2)) {
+            case ' +':
+            case ' -':
+            case ' /':
+            case ' x':
+                displayedText =
+                    displayedText?.slice(0, displayedText?.length - 2) || ''
+                break
+        }
+        // removes all arithmetic operators if they are at the
+        switch (displayedText?.slice(displayedText.length - 3)) {
+            case ' + ':
+            case ' - ':
+            case ' / ':
+            case ' x ':
+                displayedText =
+                    displayedText?.slice(0, displayedText?.length - 3) || ''
+                break
         }
 
         // adds missing closing parantheses
@@ -259,30 +293,10 @@ const CalculatorTable: FC<Props> = ({
         splitText && CalculatorLogic.removeSetOfParantheses(splitText)
         displayedText = splitText?.join(' ') || ''
 
-        // removes all arithmetic operators if they are at the end
-        switch (displayedText?.slice(displayedText.length - 2)) {
-            case ' +':
-            case ' -':
-            case ' /':
-            case ' x':
-                displayedText =
-                    displayedText?.slice(0, displayedText?.length - 2) || ''
-                break
-        }
-        // removes all arithmetic operators if they are at the end and if parantheses are removed
-        switch (displayedText?.slice(displayedText.length - 3)) {
-            case ' + ':
-            case ' - ':
-            case ' / ':
-            case ' x ':
-                displayedText =
-                    displayedText?.slice(0, displayedText?.length - 3) || ''
-                break
-        }
         displayedText &&
             setLocalStorageValueOutput(
                 isNaN(
-                    parseInt(CalculatorLogic.calculateResult(displayedText))
+                    parseFloat(CalculatorLogic.calculateResult(displayedText))
                 ) ||
                     CalculatorLogic.calculateResult(displayedText) ===
                         'Infinity'

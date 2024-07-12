@@ -1,6 +1,8 @@
 // checks if the user is allowed to type '0' or not
 export const checkForStartingZero = (displayedText: string | null): string => {
-    const splitDisplayedText: string[] | '' = displayedText?.split(' ') || ''
+    const splitDisplayedText: string[] | '' = displayedText
+        ? displayedText.split(' ')
+        : ''
     const numberToCheck: number = splitDisplayedText
         ? splitDisplayedText.length - 1
         : 0
@@ -12,8 +14,27 @@ export const checkForStartingZero = (displayedText: string | null): string => {
         i++
     ) {
         if (
+            // splitDisplayedText.length is checked in case of displayedText being the default text
+            splitDisplayedText.length &&
             splitDisplayedText[numberToCheck].charAt(0) === '0' &&
             splitDisplayedText[numberToCheck].charAt(1) !== ','
+        )
+            // latest typed '0' is removed
+            return displayedText?.slice(0, displayedText.length - 1) || ''
+    }
+    // also check for negative numbers
+    for (
+        let i = 0;
+        i < (splitDisplayedText ? splitDisplayedText[numberToCheck].length : 1);
+        i++
+    ) {
+        if (
+            // splitDisplayedText.length is checked in case of displayedText being the default text
+            splitDisplayedText.length &&
+            splitDisplayedText[numberToCheck].charAt(0) === '(' &&
+            splitDisplayedText[numberToCheck].charAt(1) === '-' &&
+            splitDisplayedText[numberToCheck].charAt(2) === '0' &&
+            splitDisplayedText[numberToCheck].charAt(3) !== ','
         )
             // latest typed '0' is removed
             return displayedText?.slice(0, displayedText.length - 1) || ''
@@ -73,12 +94,16 @@ export const addArithmeticOperator = (
         ? `0 ${buttonText} `
         : `${addSpace}${buttonText} `
     return displayedText &&
+        // use case: '123 - ' with space
         !['(', '+', '-', '/', 'x'].includes(
             displayedText.charAt(displayedText.length - 1)
-        ) &&
-        !['+', '-', '/', 'x'].includes(
+        ) && // use case: '123 -' with the additional space deleted
+        (!['+', '-', '/', 'x'].includes(
             displayedText.charAt(displayedText.length - 2)
-        )
+        ) ||
+            // use case: (-1 is not filtered out
+            (displayedText.charAt(displayedText.length - 3) === '(' &&
+                displayedText.charAt(displayedText.length - 2) === '-'))
         ? returnText
         : ''
 }
@@ -148,7 +173,7 @@ export const calculateResult = (displayedText: string | null): string => {
         !calculationContent.points &&
         !calculationContent.dashes
     )
-        return displayedText.replaceAll('(', '').replaceAll(')', '')
+        return displayedText.replace(/[()]/g, '')
 
     if (calculationContent.parantheses)
         displayedText = recursiveParanthesesCalculation(displayedText)
@@ -169,7 +194,7 @@ export const calculateResult = (displayedText: string | null): string => {
         displayedText = solveDashCalculation(splitText)
     }
 
-    return displayedText
+    return parseFloat(displayedText).toFixed(2).replace(/\.00/, '')
 }
 
 // solves the parantheses calculations into easier input
@@ -307,9 +332,9 @@ const solvePointCalculation = (
 ): string => {
     switch (algebraicSign) {
         case 'x':
-            return (parseInt(valueOne) * parseInt(valueTwo)).toString()
+            return (parseFloat(valueOne) * parseFloat(valueTwo)).toString()
         default:
-            return (parseInt(valueOne) / parseInt(valueTwo)).toString()
+            return (parseFloat(valueOne) / parseFloat(valueTwo)).toString()
     }
 }
 
@@ -324,16 +349,16 @@ const solveDashCalculation = (splitText: string[]): string => {
                 case '+':
                     result =
                         i === 0
-                            ? parseInt(splitText[i]) +
-                              parseInt(splitText[i + 2])
-                            : result + parseInt(splitText[i + 2])
+                            ? parseFloat(splitText[i]) +
+                              parseFloat(splitText[i + 2])
+                            : result + parseFloat(splitText[i + 2])
                     break
                 case '-':
                     result =
                         i === 0
-                            ? parseInt(splitText[i]) -
-                              parseInt(splitText[i + 2])
-                            : result - parseInt(splitText[i + 2])
+                            ? parseFloat(splitText[i]) -
+                              parseFloat(splitText[i + 2])
+                            : result - parseFloat(splitText[i + 2])
                     break
             }
         }
