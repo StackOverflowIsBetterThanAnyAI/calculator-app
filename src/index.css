@@ -17,17 +17,24 @@
 }
 
 body {
-    background-color: rgb(209, 143, 127);
+    background-color: rgb(219, 165, 151);
     color: rgb(12, 12, 12);
     margin: 0 auto;
     font-family: 'Poppins-Regular';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     max-width: 544px;
+    border: none;
 }
 
 button {
     font-family: 'Poppins-Regular';
+}
+
+button:focus-visible {
+    outline: rgb(243, 222, 222) solid 4px;
+    position: relative;
+    z-index: 10;
 }
 
 @font-face {

@@ -12,4 +12,5 @@
 
 .calculator-container {
     background-color: rgb(204, 127, 104);
+    border-radius: 0 0 16px 16px;
 }
