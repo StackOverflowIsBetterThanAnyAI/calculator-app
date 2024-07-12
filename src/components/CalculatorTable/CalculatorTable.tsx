@@ -289,6 +289,27 @@ const CalculatorTable: FC<Props> = ({
         splitText && CalculatorLogic.removeSetOfParantheses(splitText)
         displayedText = splitText?.join(' ') || ''
 
+        // removes all arithmetic operators if they are at the end
+        switch (displayedText?.slice(displayedText.length - 2)) {
+            case ' +':
+            case ' -':
+            case ' /':
+            case ' x':
+                displayedText =
+                    displayedText?.slice(0, displayedText?.length - 2) || ''
+                break
+        }
+        // removes all arithmetic operators if they are at the end and if parantheses are removed
+        switch (displayedText?.slice(displayedText.length - 3)) {
+            case ' + ':
+            case ' - ':
+            case ' / ':
+            case ' x ':
+                displayedText =
+                    displayedText?.slice(0, displayedText?.length - 3) || ''
+                break
+        }
+
         displayedText &&
             setLocalStorageValueOutput(
                 isNaN(
