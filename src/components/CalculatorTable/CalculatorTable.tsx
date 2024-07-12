@@ -237,10 +237,6 @@ const CalculatorTable: FC<Props> = ({
             right: CalculatorLogic.calculateRightParantheses(displayedText),
         }
 
-        console.log(displayedText?.slice(displayedText.length - 2))
-        console.log(displayedText?.slice(displayedText.length - 3))
-        console.log(displayedText)
-
         // removes all arithmetic operators if they are at the end and the space was deleted
         switch (displayedText?.slice(displayedText.length - 2)) {
             case ' +':
