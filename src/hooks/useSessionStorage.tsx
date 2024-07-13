@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 
-const useLocalStorage = (key: string, initialValue: string) => {
+const useSessionStorage = (key: string, initialValue: string) => {
     const [value, setValue] = useState<string>(() => {
-        const storedValue = localStorage.getItem(key)
+        const storedValue = sessionStorage.getItem(key)
         return storedValue !== null ? storedValue : initialValue
     })
 
@@ -22,10 +22,10 @@ const useLocalStorage = (key: string, initialValue: string) => {
 
     const setStoredValue = (newValue: string) => {
         setValue(newValue)
-        localStorage.setItem(key, newValue)
+        sessionStorage.setItem(key, newValue)
     }
 
     return [value, setStoredValue] as const
 }
 
-export default useLocalStorage
+export default useSessionStorage

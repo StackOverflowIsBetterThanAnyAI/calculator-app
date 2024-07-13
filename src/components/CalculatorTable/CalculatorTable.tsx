@@ -4,8 +4,8 @@ import './CalculatorTable.css'
 import * as CalculatorLogic from '../CalculatorLogic/CalculatorLogic'
 
 type Props = {
-    setLocalStorageValueInput: (newValue: string) => void
-    setLocalStorageValueOutput: (newValue: string) => void
+    setSessionStorageValueInput: (newValue: string) => void
+    setSessionStorageValueOutput: (newValue: string) => void
 }
 
 const COLOR_NUMBERS: string = '#f8b8a5'
@@ -13,11 +13,11 @@ const COLOR_SYMBOLS: string = '#f19e5b'
 const COLOR_EQUALS: string = '#d66658'
 
 const CalculatorTable: FC<Props> = ({
-    setLocalStorageValueInput,
-    setLocalStorageValueOutput,
+    setSessionStorageValueInput,
+    setSessionStorageValueOutput,
 }) => {
     // current value in local storage
-    const displayedText = localStorage.getItem('display')
+    const displayedText = sessionStorage.getItem('display')
 
     // ref for current set of numbers
     const currentSetOfNumbers = useRef<number>(0)
@@ -32,37 +32,37 @@ const CalculatorTable: FC<Props> = ({
     const handleDisplayText = (buttonText: string | number): void => {
         if (typeof buttonText === 'number') {
             handleNumberInput(displayedText, buttonText)
-            setLocalStorageValueOutput('')
+            setSessionStorageValueOutput('')
         } else if (
             buttonText === ',' &&
             CalculatorLogic.allowCommaUsage(displayedText)
         ) {
-            setLocalStorageValueInput(displayedText + buttonText.toString())
-            setLocalStorageValueOutput('')
+            setSessionStorageValueInput(displayedText + buttonText.toString())
+            setSessionStorageValueOutput('')
         } else if (buttonText === 'AC') {
-            setLocalStorageValueOutput('')
-            setLocalStorageValueInput('')
+            setSessionStorageValueOutput('')
+            setSessionStorageValueInput('')
         } else if (buttonText === 'DEL') {
-            setLocalStorageValueInput(
+            setSessionStorageValueInput(
                 displayedText?.slice(0, displayedText.length - 1) || ''
             )
-            setLocalStorageValueOutput('')
+            setSessionStorageValueOutput('')
         } else if (buttonText === '+/-') {
             checkForAlgebraicSign(displayedText)
-            setLocalStorageValueOutput('')
+            setSessionStorageValueOutput('')
         } else if (['+', '-', '/', 'x'].includes(buttonText)) {
             displayedText !== null &&
-                setLocalStorageValueInput(
+                setSessionStorageValueInput(
                     displayedText +
                         CalculatorLogic.addArithmeticOperator(
                             displayedText,
                             buttonText
                         )
                 )
-            setLocalStorageValueOutput('')
+            setSessionStorageValueOutput('')
         } else if (buttonText === '()') {
             addParantheses(displayedText)
-            setLocalStorageValueOutput('')
+            setSessionStorageValueOutput('')
         } else if (buttonText === '=') displayResult(displayedText)
     }
 
@@ -79,7 +79,7 @@ const CalculatorTable: FC<Props> = ({
             displayedText?.charAt(displayedText.length - 1) === ' '
         )
             return
-        setLocalStorageValueInput(
+        setSessionStorageValueInput(
             CalculatorLogic.checkForStartingZero(displayedText) +
                 CalculatorLogic.checkForClosingParanthesis(displayedText) +
                 CalculatorLogic.checkForDeletedSpace(displayedText) +
@@ -127,7 +127,7 @@ const CalculatorTable: FC<Props> = ({
                 .startsWith('(-')
         )
             // ... set the input to the sets which have not been touched, the persisting parantheses, (- and the actual set of numbers ...
-            setLocalStorageValueInput(
+            setSessionStorageValueInput(
                 `${splicedText} ${splitText
                     ?.toString()
                     .substring(0, paranthesesCounter)}(-${splitText
@@ -137,7 +137,7 @@ const CalculatorTable: FC<Props> = ({
         // ... otherwise set the input to the sets which have not been touched, the persisting parantheses and the current set of numbers,
         // but remove one paranthesis and the negative sign
         else
-            setLocalStorageValueInput(
+            setSessionStorageValueInput(
                 `${splicedText} ${splitText
                     .toString()
                     .substring(0, paranthesesCounter - 1)}${splitText
@@ -225,7 +225,7 @@ const CalculatorTable: FC<Props> = ({
         )
             upcomingSign = ' ('
 
-        setLocalStorageValueInput(
+        setSessionStorageValueInput(
             `${displayedText || ''}${addMultiplication}${upcomingSign}`
         )
     }
@@ -311,7 +311,7 @@ const CalculatorTable: FC<Props> = ({
         }
 
         displayedText &&
-            setLocalStorageValueOutput(
+            setSessionStorageValueOutput(
                 isNaN(
                     parseFloat(CalculatorLogic.calculateResult(displayedText))
                 ) ||
@@ -322,7 +322,7 @@ const CalculatorTable: FC<Props> = ({
                           displayedText
                       )}`
             )
-        setLocalStorageValueInput(displayedText || '')
+        setSessionStorageValueInput(displayedText || '')
     }
 
     type tableCharacterProps = [string | number, string]

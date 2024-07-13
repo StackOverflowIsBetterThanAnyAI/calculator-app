@@ -3,21 +3,21 @@ import './CalculatorDisplay.css'
 import BlinkingCursor from '../BlinkingCursor/BlinkingCursor'
 
 type Props = {
-    localStorageValueInput: string
-    localStorageValueOutput: string
+    sessionStorageValueInput: string
+    sessionStorageValueOutput: string
 }
 
 const CalculatorDisplay: FC<Props> = ({
-    localStorageValueInput,
-    localStorageValueOutput,
+    sessionStorageValueInput,
+    sessionStorageValueOutput,
 }) => {
     return (
         <div className="calculatorDisplay">
-            {localStorageValueInput}
+            {sessionStorageValueInput}
             <BlinkingCursor />
             <br />
             <span className="calculatorDisplay-result">
-                {localStorageValueOutput}
+                {sessionStorageValueOutput}
             </span>
         </div>
     )

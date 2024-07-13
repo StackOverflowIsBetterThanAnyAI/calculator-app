@@ -2,25 +2,26 @@ import React from 'react'
 import CalculatorDisplay from '../CalculatorDisplay/CalculatorDisplay'
 import CalculatorTable from '../CalculatorTable/CalculatorTable'
 import './Calculator.css'
-import useLocalStorage from '../../hooks/useLocalStorage'
+import useSessionStorage from '../../hooks/useSessionStorage'
 
 const Calculator = () => {
-    const [localStorageValueInput, setLocalStorageValueInput] = useLocalStorage(
-        'display',
-        'The Calculator Is Waiting For Your Actions.'
-    )
-    const [localStorageValueOutput, setLocalStorageValueOutput] =
-        useLocalStorage('result', '')
+    const [sessionStorageValueInput, setSessionStorageValueInput] =
+        useSessionStorage(
+            'display',
+            'The Calculator Is Waiting For Your Actions.'
+        )
+    const [sessionStorageValueOutput, setSessionStorageValueOutput] =
+        useSessionStorage('result', '')
 
     return (
         <div className="calculator-container">
             <CalculatorDisplay
-                localStorageValueInput={localStorageValueInput}
-                localStorageValueOutput={localStorageValueOutput}
+                sessionStorageValueInput={sessionStorageValueInput}
+                sessionStorageValueOutput={sessionStorageValueOutput}
             />
             <CalculatorTable
-                setLocalStorageValueInput={setLocalStorageValueInput}
-                setLocalStorageValueOutput={setLocalStorageValueOutput}
+                setSessionStorageValueInput={setSessionStorageValueInput}
+                setSessionStorageValueOutput={setSessionStorageValueOutput}
             />
         </div>
     )
