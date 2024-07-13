@@ -23,6 +23,7 @@ body {
     font-family: 'Poppins-Regular';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    min-width: 384px;
     max-width: 544px;
     border: none;
 }

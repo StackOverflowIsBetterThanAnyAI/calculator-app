@@ -3,11 +3,15 @@
     "version": "1.0.0",
     "manifest_version": 3,
     "author": "Michael Münzenhofer",
-    "icons": [
-        {
-            "src": "favicon.ico",
-            "sizes": "64x64 32x32 24x24 16x16",
-            "type": "image/x-icon"
+    "icons": {
+        "16": "favicon.ico",
+        "128": "favicon.ico"
+    },
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "Calculator",
+        "default_icon": {
+            "16": "favicon.ico"
         }
-    ]
+    }
 }
