@@ -66,6 +66,29 @@ const CalculatorTable: FC<Props> = ({
         } else if (buttonText === '=') displayResult(displayedText)
     }
 
+    document.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (
+            ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].includes(e.key)
+        ) {
+            handleNumberInput(displayedText, parseInt(e.key))
+            setSessionStorageValueOutput('')
+        }
+        if (e.key === 'Backspace') {
+            setSessionStorageValueInput(
+                displayedText?.slice(0, displayedText.length - 1) || ''
+            )
+            setSessionStorageValueOutput('')
+        }
+        if (e.key === 'Delete') {
+            setSessionStorageValueOutput('')
+            setSessionStorageValueInput('')
+        }
+        if (e.key === 'Enter') {
+            e.preventDefault()
+            displayResult(displayedText)
+        }
+    })
+
     // whole logic for number inputs
     const handleNumberInput = (
         displayedText: string | null,
