@@ -9,15 +9,13 @@ type Props = {
 
 const CalculatorButton: FC<Props> = ({ bgColor, buttonText, onClick }) => {
     return (
-        <span>
-            <button
-                className="calculatorButton"
-                onClick={onClick}
-                style={{ background: bgColor }}
-            >
-                {buttonText}
-            </button>
-        </span>
+        <button
+            className="calculatorButton"
+            onClick={onClick}
+            style={{ background: bgColor }}
+        >
+            {buttonText}
+        </button>
     )
 }
 

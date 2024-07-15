@@ -1,7 +1,15 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useEffect, useRef } from 'react'
 import CalculatorButton from '../CalculatorButton/CalculatorButton'
 import './CalculatorTable.css'
-import * as CalculatorLogic from '../CalculatorLogic/CalculatorLogic'
+import { checkForStartingZero } from '../../calculatorLogic/checkForStartingZero'
+import { checkForClosingParanthesis } from '../../calculatorLogic/checkForClosingParanthesis'
+import { checkForDeletedSpace } from '../../calculatorLogic/checkForDeletedSpace'
+import { allowCommaUsage } from '../../calculatorLogic/allowCommaUsage'
+import { addArithmeticOperator } from '../../calculatorLogic/addArithmeticOperator'
+import { calculateLeftParantheses } from '../../calculatorLogic/calculateLeftParantheses'
+import { calculateRightParantheses } from '../../calculatorLogic/calculateRightParantheses'
+import { removeSetOfParantheses } from '../../calculatorLogic/removeSetOfParantheses'
+import { calculateResult } from '../../calculatorLogic/calculateResult'
 
 type Props = {
     setSessionStorageValueInput: (newValue: string) => void
@@ -33,10 +41,7 @@ const CalculatorTable: FC<Props> = ({
         if (typeof buttonText === 'number') {
             handleNumberInput(displayedText, buttonText)
             setSessionStorageValueOutput('')
-        } else if (
-            buttonText === ',' &&
-            CalculatorLogic.allowCommaUsage(displayedText)
-        ) {
+        } else if (buttonText === ',' && allowCommaUsage(displayedText)) {
             setSessionStorageValueInput(displayedText + buttonText.toString())
             setSessionStorageValueOutput('')
         } else if (buttonText === 'AC') {
@@ -54,10 +59,7 @@ const CalculatorTable: FC<Props> = ({
             displayedText !== null &&
                 setSessionStorageValueInput(
                     displayedText +
-                        CalculatorLogic.addArithmeticOperator(
-                            displayedText,
-                            buttonText
-                        )
+                        addArithmeticOperator(displayedText, buttonText)
                 )
             setSessionStorageValueOutput('')
         } else if (buttonText === '()') {
@@ -65,6 +67,66 @@ const CalculatorTable: FC<Props> = ({
             setSessionStorageValueOutput('')
         } else if (buttonText === '=') displayResult(displayedText)
     }
+
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (
+                ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].includes(
+                    e.key
+                )
+            ) {
+                handleNumberInput(displayedText, parseInt(e.key))
+                setSessionStorageValueOutput('')
+            }
+            if (e.key === ',' && allowCommaUsage(displayedText)) {
+                setSessionStorageValueInput(displayedText + e.key.toString())
+                setSessionStorageValueOutput('')
+            }
+            if (['+', '-', '/', '*', 'x'].includes(e.key)) {
+                displayedText !== null &&
+                    setSessionStorageValueInput(
+                        displayedText +
+                            addArithmeticOperator(
+                                displayedText,
+                                e.key.replace(/\*/g, 'x')
+                            )
+                    )
+                setSessionStorageValueOutput('')
+            }
+            if (e.key === '(' || e.key === ')') {
+                addParantheses(displayedText)
+                setSessionStorageValueOutput('')
+            }
+            if (e.key === 'Control') {
+                checkForAlgebraicSign(displayedText)
+                setSessionStorageValueOutput('')
+            }
+            if (e.key === 'Backspace') {
+                setSessionStorageValueInput(
+                    displayedText?.slice(0, displayedText.length - 1) || ''
+                )
+                setSessionStorageValueOutput('')
+            }
+            if (e.key === 'Delete') {
+                setSessionStorageValueOutput('')
+                setSessionStorageValueInput('')
+            }
+            if (e.key === 'Enter') {
+                e.preventDefault()
+                displayResult(displayedText)
+            }
+        }
+
+        document.addEventListener('keydown', handleKeyDown)
+
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [
+        displayedText,
+        setSessionStorageValueInput,
+        setSessionStorageValueOutput,
+    ])
 
     // whole logic for number inputs
     const handleNumberInput = (
@@ -80,9 +142,9 @@ const CalculatorTable: FC<Props> = ({
         )
             return
         setSessionStorageValueInput(
-            CalculatorLogic.checkForStartingZero(displayedText) +
-                CalculatorLogic.checkForClosingParanthesis(displayedText) +
-                CalculatorLogic.checkForDeletedSpace(displayedText) +
+            checkForStartingZero(displayedText) +
+                checkForClosingParanthesis(displayedText) +
+                checkForDeletedSpace(displayedText) +
                 buttonText.toString()
         )
     }
@@ -90,7 +152,7 @@ const CalculatorTable: FC<Props> = ({
     // toggles the algebraic sign for the current set of numbers
     const checkForAlgebraicSign = (displayedText: string | null): void => {
         // no actions allowed if the displayedText is equal to the default text or null
-        if (!displayedText) return
+        if (!displayedText || !/\d/.test(displayedText)) return
         const splitText: string[] | undefined = displayedText
             ?.split(' ')
             .filter((item) => item !== '')
@@ -150,8 +212,8 @@ const CalculatorTable: FC<Props> = ({
     // whole logic for parantheses
     const addParantheses = (displayedText: string | null): void => {
         paranthesesCounter.current = {
-            left: CalculatorLogic.calculateLeftParantheses(displayedText),
-            right: CalculatorLogic.calculateRightParantheses(displayedText),
+            left: calculateLeftParantheses(displayedText),
+            right: calculateRightParantheses(displayedText),
         }
 
         let addMultiplication: string = ''
@@ -233,8 +295,8 @@ const CalculatorTable: FC<Props> = ({
     // calculates the result
     const displayResult = (displayedText: string | null): void => {
         paranthesesCounter.current = {
-            left: CalculatorLogic.calculateLeftParantheses(displayedText),
-            right: CalculatorLogic.calculateRightParantheses(displayedText),
+            left: calculateLeftParantheses(displayedText),
+            right: calculateRightParantheses(displayedText),
         }
 
         // removes all arithmetic operators if they are at the end and the space was deleted
@@ -286,7 +348,7 @@ const CalculatorTable: FC<Props> = ({
             ?.split(' ')
             .filter((item) => item !== '')
 
-        splitText && CalculatorLogic.removeSetOfParantheses(splitText)
+        splitText && removeSetOfParantheses(splitText)
         displayedText = splitText?.join(' ') || ''
 
         // removes all arithmetic operators if they are at the end
@@ -310,17 +372,27 @@ const CalculatorTable: FC<Props> = ({
                 break
         }
 
+        // check if there are unnecessary parantheses
+        displayedText =
+            displayedText &&
+            displayedText
+                .split(' ')
+                .map((item) => {
+                    const pLeft = (item.match(/\(/g) || []).length
+                    const pRight = (item.match(/\)/g) || []).length
+
+                    if (pLeft === pRight && item.indexOf('-') === -1)
+                        return item.replace(/[()]|--/g, '')
+                    return item
+                })
+                .join(' ')
+
         displayedText &&
             setSessionStorageValueOutput(
-                isNaN(
-                    parseFloat(CalculatorLogic.calculateResult(displayedText))
-                ) ||
-                    CalculatorLogic.calculateResult(displayedText) ===
-                        'Infinity'
+                isNaN(parseFloat(calculateResult(displayedText))) ||
+                    calculateResult(displayedText) === 'Infinity'
                     ? `Please do not devide by zero.`
-                    : `Result: ${CalculatorLogic.calculateResult(
-                          displayedText
-                      )}`
+                    : `Result: ${calculateResult(displayedText)}`
             )
         setSessionStorageValueInput(displayedText || '')
     }

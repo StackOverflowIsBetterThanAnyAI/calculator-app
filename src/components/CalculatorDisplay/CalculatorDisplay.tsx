@@ -15,7 +15,7 @@ const CalculatorDisplay: FC<Props> = ({
         <div className="calculatorDisplay">
             {sessionStorageValueInput}
             <BlinkingCursor />
-            <br />
+            {sessionStorageValueOutput && <br />}
             <span className="calculatorDisplay-result">
                 {sessionStorageValueOutput}
             </span>

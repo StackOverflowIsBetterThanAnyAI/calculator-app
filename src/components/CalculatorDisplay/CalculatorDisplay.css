@@ -15,7 +15,10 @@
 }
 
 .calculatorDisplay {
-    background-color: rgb(138, 138, 138);
+    background-image: linear-gradient(
+        rgb(138, 138, 138) 0%,
+        rgb(135, 135, 135) 80%
+    );
 }
 
 .calculatorDisplay-result {
