@@ -1,18 +1,21 @@
 @media only screen and (max-width: 544px) {
     body {
-        font-size: 8vw;
+        font-size: calc(min(8vw, 28px));
+        width: 100vw;
     }
     button {
-        font-size: 8vw;
+        font-size: calc(min(8vw, 28px));
     }
 }
 
 @media only screen and (min-width: 544px) {
     body {
-        font-size: 36px;
+        font-size: 28px;
+        max-width: 416px;
+        padding-top: 12px;
     }
     button {
-        font-size: 36px;
+        font-size: 28px;
     }
 }
 
@@ -23,8 +26,6 @@ body {
     font-family: 'Poppins-Regular';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    min-width: 384px;
-    max-width: 544px;
     border: none;
 }
 

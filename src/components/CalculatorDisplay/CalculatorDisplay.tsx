@@ -13,9 +13,10 @@ const CalculatorDisplay: FC<Props> = ({
 }) => {
     return (
         <div className="calculatorDisplay">
-            {sessionStorageValueInput}
-            <BlinkingCursor />
-            {sessionStorageValueOutput && <br />}
+            <div style={{ flexDirection: 'column' }}>
+                {sessionStorageValueInput}
+                <BlinkingCursor />
+            </div>
             <span className="calculatorDisplay-result">
                 {sessionStorageValueOutput}
             </span>
