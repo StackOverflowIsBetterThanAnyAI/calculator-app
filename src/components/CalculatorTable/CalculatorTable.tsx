@@ -88,7 +88,7 @@ const CalculatorTable: FC<Props> = ({
                         displayedText +
                             addArithmeticOperator(
                                 displayedText,
-                                e.key.replace(/\*/, 'x')
+                                e.key.replace(/\*/g, 'x')
                             )
                     )
                 setSessionStorageValueOutput('')
