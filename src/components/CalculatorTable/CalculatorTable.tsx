@@ -446,7 +446,7 @@ const CalculatorTable: FC<Props> = ({
                 document.activeElement === lastButton
             ) {
                 e.preventDefault()
-                ;(firstButton as HTMLElement)?.focus()
+                firstButton?.focus()
             }
 
             if (
@@ -455,7 +455,7 @@ const CalculatorTable: FC<Props> = ({
                 document.activeElement === firstButton
             ) {
                 e.preventDefault()
-                ;(lastButton as HTMLElement)?.focus()
+                lastButton?.focus()
             }
         }
 
