@@ -432,6 +432,40 @@ const CalculatorTable: FC<Props> = ({
         setSessionStorageValueInput(displayedText || '')
     }
 
+    useEffect(() => {
+        const handleFocusTrap = (e: KeyboardEvent) => {
+            const focusableButtons = Array.from(
+                document.querySelectorAll('button')
+            )
+            const firstButton = focusableButtons[0]
+            const lastButton = focusableButtons[focusableButtons.length - 1]
+
+            if (
+                e.key === 'Tab' &&
+                !e.shiftKey &&
+                document.activeElement === lastButton
+            ) {
+                e.preventDefault()
+                ;(firstButton as HTMLElement)?.focus()
+            }
+
+            if (
+                e.key === 'Tab' &&
+                e.shiftKey &&
+                document.activeElement === firstButton
+            ) {
+                e.preventDefault()
+                ;(lastButton as HTMLElement)?.focus()
+            }
+        }
+
+        document.addEventListener('keydown', handleFocusTrap)
+
+        return () => {
+            document.removeEventListener('keydown', handleFocusTrap)
+        }
+    }, [])
+
     return (
         <div className="calculatorTable">
             <table cellSpacing={0}>
