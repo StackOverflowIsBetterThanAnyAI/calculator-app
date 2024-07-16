@@ -181,7 +181,7 @@ const CalculatorTable: FC<Props> = ({
             } else break
         }
 
-        // if the current number of sets is not negative ...
+        // if the current number of sets is not negative / does not start with '(-' ...
         if (
             !splitText
                 ?.toString()
@@ -198,15 +198,25 @@ const CalculatorTable: FC<Props> = ({
             )
         // ... otherwise set the input to the sets which have not been touched, the persisting parantheses and the current set of numbers,
         // but remove one paranthesis and the negative sign
-        else
+        // additionally check if the amount of left and right parantheses is the same
+        // if so, also remove one closing paranthesis
+        else {
+            const leftParantheses = (splitText[0].match(/\(/g) || []).length
+            const rightParantheses = (splitText[0].match(/\)/g) || []).length
+
+            const invertedText = `${splicedText} ${splitText
+                .toString()
+                .substring(0, paranthesesCounter - 1)}${splitText
+                .toString()
+                .substring(paranthesesCounter - 1)
+                .slice(2)}`
+
             setSessionStorageValueInput(
-                `${splicedText} ${splitText
-                    .toString()
-                    .substring(0, paranthesesCounter - 1)}${splitText
-                    .toString()
-                    .substring(paranthesesCounter - 1)
-                    .slice(2)}`
+                leftParantheses === rightParantheses
+                    ? invertedText.replace(/\)/, '')
+                    : invertedText
             )
+        }
     }
 
     // whole logic for parantheses
