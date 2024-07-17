@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import { FC } from 'react'
 import './CalculatorDisplay.css'
 import BlinkingCursor from '../BlinkingCursor/BlinkingCursor'
 

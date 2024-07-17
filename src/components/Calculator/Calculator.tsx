@@ -1,4 +1,3 @@
-import React from 'react'
 import CalculatorDisplay from '../CalculatorDisplay/CalculatorDisplay'
 import CalculatorTable from '../CalculatorTable/CalculatorTable'
 import './Calculator.css'
