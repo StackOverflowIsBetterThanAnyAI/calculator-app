@@ -39,10 +39,10 @@ jobs:
     #       wait-on: 'http://localhost:3000'
     #       browser: chrome
 
-    #   - name: Upload Artifact
-    #     uses: actions/upload-pages-artifact@v2
-    #     with:
-    #       path: ./build
+      - name: Upload Artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: ./build
 
       - name: Deploy to GitHub Pages
         id: deployment
