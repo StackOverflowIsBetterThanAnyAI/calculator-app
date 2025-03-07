@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -37,11 +37,12 @@ jobs:
     #     with:
     #       start: npm start
     #       wait-on: 'http://localhost:3000'
+    #       browser: chrome
 
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: ./build
+    #   - name: Upload Artifact
+    #     uses: actions/upload-pages-artifact@v2
+    #     with:
+    #       path: ./build
 
       - name: Deploy to GitHub Pages
         id: deployment
