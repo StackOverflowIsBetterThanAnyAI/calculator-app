@@ -40,7 +40,7 @@ jobs:
     #       browser: chrome
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v2
         with:
           path: ./build
 
