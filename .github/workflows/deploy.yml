@@ -1,49 +1,33 @@
 name: Deploy to GitHub Pages
 
 on:
-  push:
-    branches:
-      - master
-  pull_request:
-    types:
-      - closed
+    push:
+        branches:
+            - master
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+    contents: write
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
+    deploy:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 22
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 22
 
-      - name: Install Dependencies
-        run: npm i
+            - name: Install Dependencies
+              run: npm i
 
-      - name: Run Build
-        run: npm run build
+            - name: Build App
+              run: npm run build
 
-    #   - name: Run Cypress Tests
-    #     uses: cypress-io/github-action@v6
-    #     with:
-    #       start: npm start
-    #       wait-on: 'http://localhost:3000'
-    #       browser: chrome
-
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: ./build
-
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+            - name: Deploy to GitHub Pages
+              env:
+                  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: npm run deploy
