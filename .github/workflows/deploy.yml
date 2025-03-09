@@ -16,6 +16,17 @@ jobs:
             - name: Checkout Repository
               uses: actions/checkout@v4
 
+            - name: Setup Node.js
+              uses: actions/setup-node@v3
+              with:
+                  node-version: 22
+
+            - name: Install Dependencies
+              run: npm i
+
+            - name: Build App
+              run: npm run build
+
             - name: Run Cypress Tests
               uses: cypress-io/github-action@v6
               with:
