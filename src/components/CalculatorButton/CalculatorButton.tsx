@@ -14,6 +14,7 @@ const CalculatorButton: FC<Props> = ({ bgColor, buttonText, onClick }) => {
                 className="calculatorButton"
                 onClick={onClick}
                 style={{ background: bgColor }}
+                data-testid={`button-${buttonText}`}
             >
                 {buttonText}
             </button>
