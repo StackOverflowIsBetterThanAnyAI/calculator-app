@@ -10,12 +10,12 @@
 
 @media only screen and (min-width: 544px) {
     body {
-        font-size: 28px;
+        font-size: 1.75rem;
         max-width: 416px;
         padding-top: 12px;
     }
     button {
-        font-size: 28px;
+        font-size: 1.75rem;
     }
 }
 
