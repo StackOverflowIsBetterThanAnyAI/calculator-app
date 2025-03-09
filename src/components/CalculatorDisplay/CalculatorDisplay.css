@@ -16,8 +16,8 @@
 
 .calculatorDisplay {
     background-image: linear-gradient(
-        rgb(138, 138, 138) 0%,
-        rgb(135, 135, 135) 80%
+        rgb(129, 129, 129) 0%,
+        rgb(117, 117, 117) 80%
     );
     display: flex;
     flex-direction: column;
@@ -25,5 +25,5 @@
 }
 
 .calculatorDisplay-result {
-    color: rgb(243, 224, 216);
+    color: rgb(255, 253, 252);
 }
