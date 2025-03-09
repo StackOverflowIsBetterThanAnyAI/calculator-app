@@ -2,19 +2,23 @@
     font-family: 'Poppins-Regular';
     animation: blinkingCursor 1.15s;
     animation-iteration-count: infinite;
-    color: rgb(52, 52, 52);
+    color: rgb(35, 35, 35);
 }
 
 @keyframes blinkingCursor {
     from {
-        opacity: 0;
+        opacity: 0.1;
     }
 
-    75% {
+    45% {
+        opacity: 1;
+    }
+
+    65% {
         opacity: 1;
     }
 
     to {
-        opacity: 0;
+        opacity: 0.1;
     }
 }
