@@ -63,6 +63,13 @@ const CalculatorTable: FC<Props> = ({
 
     // handles what is displayed on the display
     const handleDisplayText = (buttonText: string | number): void => {
+        if (
+            displayedText &&
+            displayedText?.length > 48 &&
+            buttonText !== 'AC' &&
+            buttonText !== 'DEL'
+        )
+            return
         if (typeof buttonText === 'number') {
             handleNumberInput(displayedText, buttonText)
             setSessionStorageValueOutput('')
@@ -389,6 +396,12 @@ const CalculatorTable: FC<Props> = ({
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            if (
+                displayedText &&
+                displayedText?.length > 48 &&
+                !['Delete', 'Backspace'].includes(e.key)
+            )
+                return
             if (
                 ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].includes(
                     e.key
