@@ -12,6 +12,7 @@ import { checkForStartingZero } from '../../calculatorLogic/checkForStartingZero
 import { removeSetOfParantheses } from '../../calculatorLogic/removeSetOfParantheses'
 import { tableCharacters } from '../../constants/tableCharacters'
 import { useFocusTrap } from '../../hooks/useFocusTrap'
+import { useKeyboardInput } from '../../hooks/useKeyboardInput'
 
 type CalculatorTableProps = {
     setSessionStorageValueInput: (newValue: string) => void
@@ -370,75 +371,17 @@ const CalculatorTable: FC<CalculatorTableProps> = ({
         [setSessionStorageValueInput, setSessionStorageValueOutput]
     )
 
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (
-                displayedText &&
-                displayedText?.length > 48 &&
-                !['Delete', 'Backspace'].includes(e.key)
-            )
-                return
-            if (
-                ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].includes(
-                    e.key
-                )
-            ) {
-                handleNumberInput(displayedText, parseInt(e.key))
-                setSessionStorageValueOutput('')
-            }
-            if (e.key === ',' && allowCommaUsage(displayedText)) {
-                setSessionStorageValueInput(displayedText + e.key.toString())
-                setSessionStorageValueOutput('')
-            }
-            if (['+', '-', '/', '*', 'x'].includes(e.key)) {
-                displayedText !== null &&
-                    setSessionStorageValueInput(
-                        displayedText +
-                            addArithmeticOperator(
-                                displayedText,
-                                e.key.replace(/\*/g, 'x')
-                            )
-                    )
-                setSessionStorageValueOutput('')
-            }
-            if (e.key === '(' || e.key === ')') {
-                addParantheses(displayedText)
-                setSessionStorageValueOutput('')
-            }
-            if (e.key === 'Control') {
-                checkForAlgebraicSign(displayedText)
-                setSessionStorageValueOutput('')
-            }
-            if (e.key === 'Backspace') {
-                setSessionStorageValueInput(
-                    displayedText?.slice(0, displayedText.length - 1) || ''
-                )
-                setSessionStorageValueOutput('')
-            }
-            if (e.key === 'Delete') {
-                setSessionStorageValueOutput('')
-                setSessionStorageValueInput('')
-            }
-            if (e.key === 'Enter') {
-                e.preventDefault()
-                displayResult(displayedText)
-            }
-        }
-
-        document.addEventListener('keydown', handleKeyDown)
-
-        return () => {
-            document.removeEventListener('keydown', handleKeyDown)
-        }
-    }, [
+    useKeyboardInput(
+        addArithmeticOperator,
         addParantheses,
+        allowCommaUsage,
         checkForAlgebraicSign,
         displayResult,
         displayedText,
         handleNumberInput,
         setSessionStorageValueInput,
-        setSessionStorageValueOutput,
-    ])
+        setSessionStorageValueOutput
+    )
 
     return (
         <div className="calculatorTable">
