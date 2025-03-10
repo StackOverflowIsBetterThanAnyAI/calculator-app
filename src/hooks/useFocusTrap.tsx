@@ -96,5 +96,5 @@ export const useFocusTrap = (tableCharacters: TableCharacterProps[]) => {
         return () => {
             document.removeEventListener('keydown', handleFocusTrap)
         }
-    }, [])
+    }, [tableCharacters])
 }

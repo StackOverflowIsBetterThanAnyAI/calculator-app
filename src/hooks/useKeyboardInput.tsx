@@ -78,7 +78,9 @@ export const useKeyboardInput = (
             document.removeEventListener('keydown', handleKeyDown)
         }
     }, [
+        addArithmeticOperator,
         addParantheses,
+        allowCommaUsage,
         checkForAlgebraicSign,
         displayResult,
         displayedText,
