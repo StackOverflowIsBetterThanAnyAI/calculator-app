@@ -1,6 +1,6 @@
 import './CalculatorTable.css'
 import CalculatorButton from '../CalculatorButton/CalculatorButton'
-import { FC, useCallback, useEffect, useRef } from 'react'
+import { FC, useCallback, useRef } from 'react'
 import { addArithmeticOperator } from '../../calculatorLogic/addArithmeticOperator'
 import { allowCommaUsage } from '../../calculatorLogic/allowCommaUsage'
 import { calculateResult } from '../../calculatorLogic/calculateResult'
@@ -371,6 +371,7 @@ const CalculatorTable: FC<CalculatorTableProps> = ({
         [setSessionStorageValueInput, setSessionStorageValueOutput]
     )
 
+    // handles keyboard input
     useKeyboardInput(
         addArithmeticOperator,
         addParantheses,
