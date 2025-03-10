@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/calculator-app/static/css/main.4385c507.css",
-    "main.js": "/calculator-app/static/js/main.65c58bd3.js",
+    "main.js": "/calculator-app/static/js/main.d112b819.js",
     "static/media/Poppins-Regular.ttf": "/calculator-app/static/media/Poppins-Regular.35d26b781dc5fda684cc.ttf",
     "static/media/Poppins-Medium.ttf": "/calculator-app/static/media/Poppins-Medium.673ed42382ab264e0bf5.ttf",
     "static/media/Poppins-Bold.ttf": "/calculator-app/static/media/Poppins-Bold.cdb29a5d7ccf57ff05a3.ttf",
     "index.html": "/calculator-app/index.html",
     "main.4385c507.css.map": "/calculator-app/static/css/main.4385c507.css.map",
-    "main.65c58bd3.js.map": "/calculator-app/static/js/main.65c58bd3.js.map"
+    "main.d112b819.js.map": "/calculator-app/static/js/main.d112b819.js.map"
   },
   "entrypoints": [
     "static/css/main.4385c507.css",
-    "static/js/main.65c58bd3.js"
+    "static/js/main.d112b819.js"
   ]
 }
