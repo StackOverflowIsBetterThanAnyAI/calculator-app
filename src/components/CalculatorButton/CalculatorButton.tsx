@@ -1,5 +1,5 @@
-import { FC, MouseEventHandler } from 'react'
 import './CalculatorButton.css'
+import { FC, MouseEventHandler } from 'react'
 
 type Props = {
     bgColor: string

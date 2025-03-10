@@ -1,15 +1,15 @@
-import { FC, useCallback, useEffect, useRef } from 'react'
-import CalculatorButton from '../CalculatorButton/CalculatorButton'
 import './CalculatorTable.css'
-import { checkForStartingZero } from '../../calculatorLogic/checkForStartingZero'
-import { checkForClosingParanthesis } from '../../calculatorLogic/checkForClosingParanthesis'
-import { checkForDeletedSpace } from '../../calculatorLogic/checkForDeletedSpace'
-import { allowCommaUsage } from '../../calculatorLogic/allowCommaUsage'
+import CalculatorButton from '../CalculatorButton/CalculatorButton'
+import { FC, useCallback, useEffect, useRef } from 'react'
 import { addArithmeticOperator } from '../../calculatorLogic/addArithmeticOperator'
+import { allowCommaUsage } from '../../calculatorLogic/allowCommaUsage'
+import { calculateResult } from '../../calculatorLogic/calculateResult'
 import { calculateLeftParantheses } from '../../calculatorLogic/calculateLeftParantheses'
 import { calculateRightParantheses } from '../../calculatorLogic/calculateRightParantheses'
+import { checkForClosingParanthesis } from '../../calculatorLogic/checkForClosingParanthesis'
+import { checkForDeletedSpace } from '../../calculatorLogic/checkForDeletedSpace'
+import { checkForStartingZero } from '../../calculatorLogic/checkForStartingZero'
 import { removeSetOfParantheses } from '../../calculatorLogic/removeSetOfParantheses'
-import { calculateResult } from '../../calculatorLogic/calculateResult'
 
 type Props = {
     setSessionStorageValueInput: (newValue: string) => void

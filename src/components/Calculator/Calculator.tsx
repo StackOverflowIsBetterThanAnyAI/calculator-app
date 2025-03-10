@@ -1,6 +1,6 @@
+import './Calculator.css'
 import CalculatorDisplay from '../CalculatorDisplay/CalculatorDisplay'
 import CalculatorTable from '../CalculatorTable/CalculatorTable'
-import './Calculator.css'
 import useSessionStorage from '../../hooks/useSessionStorage'
 
 const Calculator = () => {

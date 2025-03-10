@@ -1,6 +1,6 @@
-import { FC } from 'react'
 import './CalculatorDisplay.css'
 import BlinkingCursor from '../BlinkingCursor/BlinkingCursor'
+import { FC } from 'react'
 
 type Props = {
     sessionStorageValueInput: string
