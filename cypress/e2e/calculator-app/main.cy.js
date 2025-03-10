@@ -82,7 +82,7 @@ describe('Calculator App', () => {
         cy.get('body').trigger('keydown', { key: 'Enter' })
         cy.get('[data-testid="display"]').should(
             'have.text',
-            '1 / 0|Please do not divide by zero.'
+            '1 / 0|Please do not divide by Zero.'
         )
 
         cy.get('body').trigger('keydown', { key: 'Delete' })
@@ -93,7 +93,7 @@ describe('Calculator App', () => {
         cy.get('body').trigger('keydown', { key: 'Enter' })
         cy.get('[data-testid="display"]').should(
             'have.text',
-            '(-1 / 0)|Please do not divide by zero.'
+            '(-1 / 0)|Please do not divide by Zero.'
         )
     })
 })

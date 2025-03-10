@@ -386,7 +386,7 @@ const CalculatorTable: FC<CalculatorTableProps> = ({
                 setSessionStorageValueOutput(
                     isNaN(parseFloat(calculateResult(displayedText))) ||
                         /Infinity/g.test(calculateResult(displayedText))
-                        ? `Please do not divide by zero.`
+                        ? `Please do not divide by Zero.`
                         : `Result: ${calculateResult(displayedText)}`
                 )
             setSessionStorageValueInput(displayedText || '')
