@@ -11,7 +11,7 @@ import { checkForDeletedSpace } from '../../calculatorLogic/checkForDeletedSpace
 import { checkForStartingZero } from '../../calculatorLogic/checkForStartingZero'
 import { removeSetOfParantheses } from '../../calculatorLogic/removeSetOfParantheses'
 
-type Props = {
+type CalculatorTableProps = {
     setSessionStorageValueInput: (newValue: string) => void
     setSessionStorageValueOutput: (newValue: string) => void
 }
@@ -20,9 +20,9 @@ const COLOR_NUMBERS: string = '#f8b8a5'
 const COLOR_SYMBOLS: string = '#f19e5b'
 const COLOR_EQUALS: string = '#d66658'
 
-type tableCharacterProps = [string | number, string]
+type TableCharacterProps = [string | number, string]
 
-const tableCharacters: tableCharacterProps[] = [
+const tableCharacters: TableCharacterProps[] = [
     ['AC', COLOR_SYMBOLS],
     ['/', COLOR_SYMBOLS],
     ['x', COLOR_SYMBOLS],
@@ -45,7 +45,7 @@ const tableCharacters: tableCharacterProps[] = [
     ['=', COLOR_EQUALS],
 ]
 
-const CalculatorTable: FC<Props> = ({
+const CalculatorTable: FC<CalculatorTableProps> = ({
     setSessionStorageValueInput,
     setSessionStorageValueOutput,
 }) => {
@@ -575,7 +575,7 @@ const CalculatorTable: FC<Props> = ({
                                         <CalculatorButton
                                             bgColor={item[1]}
                                             buttonText={item[0]}
-                                            onClick={() => {
+                                            handleClick={() => {
                                                 handleDisplayText(item[0])
                                             }}
                                         />

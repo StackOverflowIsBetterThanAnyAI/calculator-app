@@ -1,18 +1,22 @@
 import './CalculatorButton.css'
 import { FC, MouseEventHandler } from 'react'
 
-type Props = {
+type CalculatorButtonProps = {
     bgColor: string
     buttonText: string | number
-    onClick: MouseEventHandler
+    handleClick: MouseEventHandler
 }
 
-const CalculatorButton: FC<Props> = ({ bgColor, buttonText, onClick }) => {
+const CalculatorButton: FC<CalculatorButtonProps> = ({
+    bgColor,
+    buttonText,
+    handleClick,
+}) => {
     return (
         <span>
             <button
                 className="calculatorButton"
-                onClick={onClick}
+                onClick={handleClick}
                 style={{ background: bgColor }}
                 data-testid={`button-${buttonText}`}
             >

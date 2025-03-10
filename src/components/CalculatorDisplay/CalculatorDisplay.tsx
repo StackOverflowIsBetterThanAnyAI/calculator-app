@@ -2,12 +2,12 @@ import './CalculatorDisplay.css'
 import BlinkingCursor from '../BlinkingCursor/BlinkingCursor'
 import { FC } from 'react'
 
-type Props = {
+type CalculatorDisplayProps = {
     sessionStorageValueInput: string
     sessionStorageValueOutput: string
 }
 
-const CalculatorDisplay: FC<Props> = ({
+const CalculatorDisplay: FC<CalculatorDisplayProps> = ({
     sessionStorageValueInput,
     sessionStorageValueOutput,
 }) => {
