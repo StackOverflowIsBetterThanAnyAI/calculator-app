@@ -1,16 +1,16 @@
 @media only screen and (max-width: 544px) {
     .calculatorDisplay {
+        margin-bottom: 3vw;
         min-height: calc(min(23.5vw, 96px));
         padding: 1.5vw;
-        margin-bottom: 3vw;
     }
 }
 
 @media only screen and (min-width: 544px) {
     .calculatorDisplay {
+        margin-bottom: 16px;
         min-height: 96px;
         padding: 8px;
-        margin-bottom: 16px;
     }
 }
 
