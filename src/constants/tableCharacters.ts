@@ -2,7 +2,7 @@ const COLOR_NUMBERS: string = '#f8b8a5'
 const COLOR_SYMBOLS: string = '#f19e5b'
 const COLOR_EQUALS: string = '#d66658'
 
-type TableCharacterProps = [string | number, string]
+export type TableCharacterProps = [string | number, string]
 
 export const tableCharacters: TableCharacterProps[] = [
     ['AC', COLOR_SYMBOLS],
