@@ -23,8 +23,9 @@ export const useKeyboardInput = (
                 displayedText &&
                 displayedText?.length > 48 &&
                 !['Delete', 'Backspace'].includes(e.key)
-            )
+            ) {
                 return
+            }
             if (
                 ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'].includes(
                     e.key
