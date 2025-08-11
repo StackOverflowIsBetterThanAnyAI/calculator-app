@@ -13,4 +13,5 @@
 
 .calculator-container {
     background-color: rgb(204, 127, 104);
+    box-shadow: 0 0 24px 4px rgba(12, 12, 12, 0.1);
 }
