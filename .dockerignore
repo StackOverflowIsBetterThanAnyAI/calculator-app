@@ -1,0 +1,8 @@
+cypress
+.github
+noded_modules
+.gitignore
+cypress.config.ts
+LICENSE
+preview.png
+README.md
