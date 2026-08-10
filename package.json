@@ -35,7 +35,7 @@
         ]
     },
     "devDependencies": {
-        "cypress": "^14.5.4",
+        "cypress": "^15.20.0",
         "prettier-es5": "^0.0.4"
     },
     "overrides": {
